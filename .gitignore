@@ -1,0 +1,28 @@
+# Python cache and artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.venv/
+conda-env/
+
+# Environment files
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# ML models and artifacts (optional if large)
+*.h5
+*.pkl
+
+# Logs
+*.log
