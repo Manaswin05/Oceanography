@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Analysis | Marine Research Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables for consistent theming */
+        :root {
+            --color-primary-dark: #0a192f;
+            --color-primary-medium: #14375c;
+            --color-accent: #64ffda;
+            --color-text-light: #ccd6f6;
+            --color-text-medium: #a8b2d1;
+            --color-text-dark: #8892b0;
+            --card-bg: rgba(23, 42, 69, 0.5);
+            --card-border: rgba(100, 255, 218, 0.1);
+            --transition-normal: all 0.3s ease;
+            --transition-slow: all 0.5s ease;
+        }
+        
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary-medium) 100%);
+            color: var(--color-text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header Styles */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--color-accent);
+            border-radius: 2px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .logo-icon {
+            font-size: 2.8rem;
+            color: var(--color-accent);
+            margin-right: 15px;
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+        }
+        
+        .title-primary {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: var(--color-text-light);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--color-text-dark);
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Navigation */
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+        
+        .nav-button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background: transparent;
+            color: var(--color-text-medium);
+            text-decoration: none;
+            border: 1px solid var(--color-text-dark);
+            border-radius: 4px;
+            transition: var(--transition-normal);
+        }
+        
+        .nav-button:hover, .nav-button.active {
+            color: var(--color-accent);
+            border-color: var(--color-accent);
+            background: rgba(100, 255, 218, 0.1);
+        }
+        
+        /* Image Analysis Section */
+        .analysis-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        @media (max-width: 900px) {
+            .analysis-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .upload-container, .results-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: var(--transition-normal);
+        }
+        
+        .upload-container:hover, .results-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(100, 255, 218, 0.3);
+        }
+        
+        .section-title {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: var(--color-text-light);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--color-accent);
+            transition: var(--transition-normal);
+        }
+        
+        .upload-container:hover .section-title::after {
+            width: 80px;
+        }
+        
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed var(--color-text-dark);
+            border-radius: 8px;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            transition: var(--transition-normal);
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--color-accent);
+            background: rgba(100, 255, 218, 0.05);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--color-text-dark);
+            margin-bottom: 15px;
+            transition: var(--transition-normal);
+        }
+        
+        .upload-area:hover .upload-icon {
+            color: var(--color-accent);
+            transform: translateY(-5px);
+        }
+        
+        .upload-text {
+            color: var(--color-text-medium);
+            margin-bottom: 15px;
+        }
+        
+        .upload-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: transparent;
+            color: var(--color-accent);
+            border: 1px solid var(--color-accent);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: var(--transition-normal);
+        }
+        
+        .upload-button:hover {
+            background: rgba(100, 255, 218, 0.1);
+        }
+        
+        #image-upload {
+            display: none;
+        }
+        
+        /* Preview Area */
+        .preview-container {
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .image-preview {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Results Area */
+        .results-placeholder {
+            color: var(--color-text-medium);
+            text-align: center;
+            padding: 40px 20px;
+            font-style: italic;
+        }
+        
+        .analysis-results {
+            display: none;
+        }
+        
+        .result-item {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+        }
+        
+        .result-label {
+            color: var(--color-text-medium);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .result-value {
+            color: var(--color-text-light);
+            font-size: 1.1rem;
+        }
+        
+        .confidence-meter {
+            height: 8px;
+            background: rgba(136, 146, 176, 0.2);
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        
+        .confidence-level {
+            height: 100%;
+            background: var(--color-accent);
+            border-radius: 4px;
+            width: 0;
+            transition: width 1s ease;
+        }
+        
+        /* Analysis Options */
+        .analysis-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .option-card {
+            background: rgba(10, 25, 47, 0.5);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            border: 1px solid transparent;
+        }
+        
+        .option-card:hover {
+            border-color: var(--color-accent);
+            transform: translateY(-3px);
+        }
+        
+        .option-card.selected {
+            border-color: var(--color-accent);
+            background: rgba(100, 255, 218, 0.1);
+        }
+        
+        .option-icon {
+            font-size: 1.8rem;
+            color: var(--color-text-medium);
+            margin-bottom: 10px;
+            transition: var(--transition-normal);
+        }
+        
+        .option-card:hover .option-icon,
+        .option-card.selected .option-icon {
+            color: var(--color-accent);
+        }
+        
+        .option-name {
+            color: var(--color-text-light);
+            font-size: 0.9rem;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn-primary {
+            display: inline-block;
+            padding: 12px 30px;
+            background: transparent;
+            color: var(--color-accent);
+            text-decoration: none;
+            border: 1px solid var(--color-accent);
+            border-radius: 4px;
+            transition: var(--transition-normal);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+        }
+        
+        .btn-primary:hover {
+            background: rgba(100, 255, 218, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(100, 255, 218, 0.2);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-primary:disabled:hover {
+            transform: none;
+            box-shadow: none;
+            background: transparent;
+        }
+        
+        /* Footer Styles */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+            color: var(--color-text-dark);
+            border-top: 1px solid rgba(100, 255, 218, 0.1);
+            position: relative;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+        }
+        
+        /* Animations */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        /* Decorative Elements */
+        .ocean-waves {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" fill="%2364ffda22"><path d="M0 0v46.29c47.79 22.2 103.59 32.17 158 28 70.36-5.37 136.33-33.31 206.8-37.5 73.84-4.36 147.54 16.88 218.2 35.26 69.27 18 138.3 24.88 209.4 13.08 36.15-6 69.85-17.84 104.45-29.34C989.49 25 1113-14.29 1200 52.47V0z" /></svg>');
+            background-repeat: repeat-x;
+            background-size: 1200px 100px;
+            animation: waves 15s linear infinite;
+            z-index: -1;
+        }
+        
+        @keyframes waves {
+            0% {
+                background-position-x: 0;
+            }
+            100% {
+                background-position-x: 1200px;
+            }
+        }
+        
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(100, 255, 218, 0.1);
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background elements -->
+    <div class="ocean-waves"></div>
+    
+    <div class="container">
+        <header class="header">
+            <div class="logo-container">
+                <i class="fas fa-water logo-icon"></i>
+                <h1 class="title-primary">Marine Image Analysis</h1>
+            </div>
+            <p class="tagline">Upload marine specimen images for detailed taxonomical and otolithographical analysis</p>
+            
+            <div class="nav-container">
+                <a href="#" class="nav-button"><i class="fas fa-home"></i> Home</a>
+                <a href="#" class="nav-button"><i class="fas fa-fish"></i> Taxonomical Analysis</a>
+                <a href="#" class="nav-button active"><i class="fas fa-search"></i> Image Analysis</a>
+                <a href="#" class="nav-button"><i class="fas fa-database"></i> Research Database</a>
+            </div>
+        </header>
+        
+        <main>
+            <div class="analysis-section">
+                <div class="upload-container">
+                    <h2 class="section-title">Upload Image</h2>
+                    
+                    <div class="upload-area" id="upload-area">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <p class="upload-text">Drag & drop your image here or click to browse</p>
+                        <label for="image-upload" class="upload-button">Select Image</label>
+                        <input type="file" id="image-upload" accept="image/*">
+                    </div>
+                    
+                    <div class="preview-container" id="preview-container">
+                        <img src="" alt="Image preview" class="image-preview" id="image-preview">
+                        <button class="btn-primary" id="remove-image-btn">Remove Image</button>
+                    </div>
+                    
+                    <div class="analysis-options">
+                        <div class="option-card" data-option="taxonomy">
+                            <i class="fas fa-fish option-icon"></i>
+                            <p class="option-name">Taxonomical Analysis</p>
+                        </div>
+                        <div class="option-card" data-option="otolith">
+                            <i class="fas fa-search option-icon"></i>
+                            <p class="option-name">Otolithographical Analysis</p>
+                        </div>
+                        <div class="option-card" data-option="habitat">
+                            <i class="fas fa-water option-icon"></i>
+                            <p class="option-name">Habitat Analysis</p>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="btn-primary" id="analyze-btn" disabled>Analyze Image</button>
+                        <button class="btn-primary" id="reset-btn">Reset</button>
+                    </div>
+                </div>
+                
+                <div class="results-container">
+                    <h2 class="section-title">Analysis Results</h2>
+                    
+                    <div class="results-placeholder" id="results-placeholder">
+                        <i class="fas fa-microscope" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                        <p>Analysis results will appear here after processing</p>
+                    </div>
+                    
+                    <div class="analysis-results" id="analysis-results">
+                        <div class="result-item">
+                            <div class="result-label">Species Identification</div>
+                            <div class="result-value" id="species-result">Unknown</div>
+                            <div class="confidence-meter">
+                                <div class="confidence-level" id="confidence-level"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="result-item">
+                            <div class="result-label">Family</div>
+                            <div class="result-value" id="family-result">Unknown</div>
+                        </div>
+                        
+                        <div class="result-item">
+                            <div class="result-label">Characteristics</div>
+                            <div class="result-value" id="characteristics-result">No data available</div>
+                        </div>
+                        
+                        <div class="result-item">
+                            <div class="result-label">Estimated Size</div>
+                            <div class="result-value" id="size-result">No data available</div>
+                        </div>
+                        
+                        <div class="result-item">
+                            <div class="result-label">Habitat Information</div>
+                            <div class="result-value" id="habitat-result">No data available</div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button class="btn-primary" id="save-results-btn">Save Results</button>
+                            <button class="btn-primary" id="export-report-btn">Export Report</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <p>Marine Research Portal &copy; 2023 | Advanced Oceanography Analysis Platform</p>
+            <p>Part of the Global Marine Conservation Initiative</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const uploadArea = document.getElementById('upload-area');
+            const imageUpload = document.getElementById('image-upload');
+            const previewContainer = document.getElementById('preview-container');
+            const imagePreview = document.getElementById('image-preview');
+            const removeImageBtn = document.getElementById('remove-image-btn');
+            const analyzeBtn = document.getElementById('analyze-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const resultsPlaceholder = document.getElementById('results-placeholder');
+            const analysisResults = document.getElementById('analysis-results');
+            const optionCards = document.querySelectorAll('.option-card');
+            const saveResultsBtn = document.getElementById('save-results-btn');
+            const exportReportBtn = document.getElementById('export-report-btn');
+            
+            // Result elements
+            const speciesResult = document.getElementById('species-result');
+            const familyResult = document.getElementById('family-result');
+            const characteristicsResult = document.getElementById('characteristics-result');
+            const sizeResult = document.getElementById('size-result');
+            const habitatResult = document.getElementById('habitat-result');
+            const confidenceLevel = document.getElementById('confidence-level');
+            
+            // Variables
+            let selectedOption = null;
+            let currentImage = null;
+            
+            // Event Listeners
+            uploadArea.addEventListener('click', () => imageUpload.click());
+            
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--color-accent)';
+                uploadArea.style.backgroundColor = 'rgba(100, 255, 218, 0.05)';
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.borderColor = 'var(--color-text-dark)';
+                uploadArea.style.backgroundColor = 'transparent';
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--color-text-dark)';
+                uploadArea.style.backgroundColor = 'transparent';
+                
+                if (e.dataTransfer.files.length) {
+                    handleImageUpload(e.dataTransfer.files[0]);
+                }
+            });
+            
+            imageUpload.addEventListener('change', (e) => {
+                if (e.target.files.length) {
+                    handleImageUpload(e.target.files[0]);
+                }
+            });
+            
+            removeImageBtn.addEventListener('click', resetImage);
+            
+            analyzeBtn.addEventListener('click', analyzeImage);
+            
+            resetBtn.addEventListener('click', resetAll);
+            
+            optionCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    optionCards.forEach(c => c.classList.remove('selected'));
+                    card.classList.add('selected');
+                    selectedOption = card.getAttribute('data-option');
+                    updateAnalyzeButtonState();
+                });
+            });
+            
+            saveResultsBtn.addEventListener('click', () => {
+                alert('Results saved to your research database.');
+            });
+            
+            exportReportBtn.addEventListener('click', () => {
+                alert('Report exported successfully.');
+            });
+            
+            // Functions
+            function handleImageUpload(file) {
+                if (!file.type.match('image.*')) {
+                    alert('Please upload an image file.');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                    currentImage = file;
+                    updateAnalyzeButtonState();
+                };
+                
+                reader.readAsDataURL(file);
+            }
+            
+            function resetImage() {
+                imagePreview.src = '';
+                previewContainer.style.display = 'none';
+                imageUpload.value = '';
+                currentImage = null;
+                updateAnalyzeButtonState();
+            }
+            
+            function resetAll() {
+                resetImage();
+                optionCards.forEach(c => c.classList.remove('selected'));
+                selectedOption = null;
+                analysisResults.style.display = 'none';
+                resultsPlaceholder.style.display = 'block';
+                updateAnalyzeButtonState();
+            }
+            
+            function updateAnalyzeButtonState() {
+                analyzeBtn.disabled = !(currentImage && selectedOption);
+            }
+            
+            function analyzeImage() {
+                if (!currentImage || !selectedOption) return;
+                
+                // Show loading state
+                analyzeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing...';
+                analyzeBtn.disabled = true;
+                
+                // Create FormData for file upload
+                const formData = new FormData();
+                formData.append('file', currentImage);
+                formData.append('analysis_type', selectedOption);
+                
+                // Call backend API
+                fetch('http://127.0.0.1:8000/analyze-image', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(result => {
+                    // Display results
+                    resultsPlaceholder.style.display = 'none';
+                    analysisResults.style.display = 'block';
+                    
+                    // Update result fields with API response
+                    speciesResult.textContent = result.species || 'Unknown';
+                    familyResult.textContent = result.family || 'Unknown';
+                    characteristicsResult.textContent = result.characteristics || 'No data available';
+                    sizeResult.textContent = result.size || 'No data available';
+                    habitatResult.textContent = result.habitat || 'No data available';
+                    confidenceLevel.style.width = `${(result.confidence * 100)}%` || '0%';
+                    
+                    // Reset button state
+                    analyzeBtn.innerHTML = 'Analyze Image';
+                    analyzeBtn.disabled = false;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Analysis failed. Please make sure the backend server is running.');
+                    
+                    // Reset button state
+                    analyzeBtn.innerHTML = 'Analyze Image';
+                    analyzeBtn.disabled = false;
+                });
+            }
+            
+            // Create animated bubbles in the background
+            for (let i = 0; i < 20; i++) {
+                createBubble();
+            }
+            
+            function createBubble() {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                
+                // Random size between 5 and 50px
+                const size = Math.random() * 45 + 5;
+                
+                // Random position
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                
+                // Random animation duration
+                const duration = Math.random() * 15 + 10;
+                
+                // Apply styles
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${posX}vw`;
+                bubble.style.top = `${posY}vh`;
+                bubble.style.opacity = Math.random() * 0.5 + 0.1;
+                
+                document.body.appendChild(bubble);
+                
+                // Animate the bubble
+                animateBubble(bubble, duration);
+            }
+            
+            function animateBubble(bubble, duration) {
+                // Random horizontal movement
+                const moveX = (Math.random() - 0.5) * 20;
+                
+                // Animate upwards and slightly sideways
+                bubble.animate([
+                    { transform: 'translate(0, 0)', opacity: bubble.style.opacity },
+                    { transform: `translate(${moveX}vw, -100vh)`, opacity: 0 }
+                ], {
+                    duration: duration * 1000,
+                    easing: 'linear',
+                }).onfinish = () => {
+                    // Reset position when animation completes
+                    bubble.style.top = '100vh';
+                    bubble.style.left = `${Math.random() * 100}vw`;
+                    animateBubble(bubble, duration);
+                };
+            }
+        });
+    </script>
+</body>
+</html>

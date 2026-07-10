@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxonomical Analysis | Marine Research Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables for consistent theming */
+        :root {
+            --color-primary-dark: #0a192f;
+            --color-primary-medium: #14375c;
+            --color-accent: #64ffda;
+            --color-text-light: #ccd6f6;
+            --color-text-medium: #a8b2d1;
+            --color-text-dark: #8892b0;
+            --card-bg: rgba(23, 42, 69, 0.7);
+            --card-border: rgba(100, 255, 218, 0.1);
+            --transition-normal: all 0.3s ease;
+        }
+        
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary-medium) 100%);
+            color: var(--color-text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header Styles */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--color-accent);
+            border-radius: 2px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo-icon {
+            font-size: 2.8rem;
+            color: var(--color-accent);
+            margin-right: 15px;
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+        }
+        
+        .title-primary {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: var(--color-text-light);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--color-text-dark);
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Form Styles */
+        .form-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 40px;
+            margin-top: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--color-text-medium);
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            background: #0a192f;
+            border: 1px solid var(--card-border);
+            border-radius: 4px;
+            color: var(--color-text-light);
+            font-size: 1rem;
+            transition: var(--transition-normal);
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 8px rgba(100, 255, 218, 0.3);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: 'Courier New', Courier, monospace; /* Better for sequences */
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            display: inline-block;
+            padding: 12px 30px;
+            background: transparent;
+            color: var(--color-accent);
+            text-decoration: none;
+            border: 1px solid var(--color-accent);
+            border-radius: 4px;
+            transition: var(--transition-normal);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1rem;
+        }
+        
+        .btn-primary:hover {
+            background: rgba(100, 255, 218, 0.1);
+        }
+
+        .btn-primary.submitted {
+            background-color: var(--color-accent);
+            color: var(--color-primary-dark);
+            border-color: var(--color-accent);
+            cursor: not-allowed;
+        }
+        
+        /* Results Styles */
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+        }
+        
+        .result-label {
+            font-weight: 500;
+            color: var(--color-text-medium);
+        }
+        
+        .result-value {
+            color: var(--color-accent);
+            font-weight: 600;
+        }
+        
+        /* Alert Styles */
+        .taxonomy-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #0a192f 0%, #14375c 100%);
+            color: var(--color-text-light);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--color-accent);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            max-width: 350px;
+            animation: slideIn 0.5s ease, fadeOut 0.5s ease 5.5s;
+        }
+        
+        .taxonomy-alert h3 {
+            color: var(--color-accent);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .taxonomy-alert h3 i {
+            margin-right: 10px;
+        }
+        
+        .alert-content {
+            margin-bottom: 15px;
+        }
+        
+        .alert-taxonomy {
+            background: rgba(100, 255, 218, 0.1);
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+        
+        .alert-countdown {
+            height: 4px;
+            background: rgba(100, 255, 218, 0.3);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .alert-progress {
+            height: 100%;
+            background: var(--color-accent);
+            width: 100%;
+            animation: countdown 6s linear;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        @keyframes countdown {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+        
+        /* Decorative Elements (Waves & Bubbles) */
+        .ocean-waves {
+            position: absolute; bottom: 0; left: 0; width: 100%; height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" fill="%2364ffda22"><path d="M0 0v46.29c47.79 22.2 103.59 32.17 158 28 70.36-5.37 136.33-33.31 206.8-37.5 73.84-4.36 147.54 16.88 218.2 35.26 69.27 18 138.3 24.88 209.4 13.08 36.15-6 69.85-17.84 104.45-29.34C989.49 25 1113-14.29 1200 52.47V0z" /></svg>');
+            background-repeat: repeat-x; background-size: 1200px 100px;
+            animation: waves 15s linear infinite; z-index: -2;
+        }
+        
+        .bubble {
+            position: absolute; 
+            border-radius: 50%; 
+            background: rgba(100, 255, 218, 0.1); 
+            z-index: -2;
+            animation: rise 15s infinite linear;
+        }
+        
+        @keyframes waves { 
+            0% { background-position-x: 0; } 
+            100% { background-position-x: 1200px; } 
+        }
+        
+        @keyframes rise { 
+            0% { transform: translateY(0); opacity: 0; } 
+            10% { opacity: 0.5; } 
+            90% { opacity: 0.5; } 
+            100% { transform: translateY(-110vh); opacity: 0; } 
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: var(--color-accent);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="ocean-waves"></div>
+    
+    <!-- Add bubbles for visual effect -->
+    <script>
+        // Create bubbles
+        for (let i = 0; i < 20; i++) {
+            const bubble = document.createElement('div');
+            bubble.classList.add('bubble');
+            const size = Math.random() * 30 + 10;
+            bubble.style.width = `${size}px`;
+            bubble.style.height = `${size}px`;
+            bubble.style.left = `${Math.random() * 100}vw`;
+            bubble.style.animationDuration = `${Math.random() * 10 + 15}s`;
+            bubble.style.animationDelay = `${Math.random() * 5}s`;
+            document.body.appendChild(bubble);
+        }
+    </script>
+    
+    <div class="container">
+        <header class="header">
+            <div class="logo-container">
+                <i class="fas fa-dna logo-icon"></i>
+                <h1 class="title-primary">Taxonomical Analysis</h1>
+            </div>
+            <p class="tagline">Submit your genetic sequence data for analysis.</p>
+        </header>
+        
+        <main>
+            <div class="form-container">
+                <form id="taxonomyForm">
+                    <div class="form-group">
+                        <label for="sequence">Sequence</label>
+                        <textarea id="sequence" name="sequence" placeholder="Enter genetic sequence (e.g., ATCG...)" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="filter_id">Filter ID</label>
+                        <input type="text" id="filter_id" name="filter_id" placeholder="e.g., sample-001-alpha" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reads">Reads</label>
+                        <input type="number" id="reads" name="reads" placeholder="e.g., 15000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" id="submitBtn" class="btn-primary">
+                            <span id="btnText">Submit for Analysis</span>
+                        </button>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Prediction Results</label>
+                        <div id="outputBox" style="background:#0a192f; padding:15px; border-radius:6px; color:#64ffda; min-height:100px;">
+                            <div id="resultsContainer">Results will appear here after analysis</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const taxonomyForm = document.getElementById('taxonomyForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const resultsContainer = document.getElementById('resultsContainer');
+
+        // Function to show taxonomy alert
+        function showTaxonomyAlert(taxonomy, confidence) {
+            // Use the taxonomy data from API or fallback to sample data
+            const taxonomyData = taxonomy || {
+                Kingdom: 'Eukaryota',
+                Phylum: 'Arthropoda', 
+                Class: 'Hexanauplia',
+                Order: 'Calanoida',
+                Family: 'Paracalanidae',
+                Genus: 'Paracalanus',
+                Species: 'unassigned'
+            };
+            
+            const confidenceData = confidence || {};
+            
+            // Create basic alert message with all 7 taxonomy levels
+            let alertMessage = "Taxonomy Classification:\n\n";
+            alertMessage += `Kingdom: ${taxonomyData.Kingdom}`;
+            if (confidenceData.Kingdom) alertMessage += ` (${(confidenceData.Kingdom * 100).toFixed(1)}%)`;
+            alertMessage += `\nPhylum: ${taxonomyData.Phylum}`;
+            if (confidenceData.Phylum) alertMessage += ` (${(confidenceData.Phylum * 100).toFixed(1)}%)`;
+            alertMessage += `\nClass: ${taxonomyData.Class}`;
+            if (confidenceData.Class) alertMessage += ` (${(confidenceData.Class * 100).toFixed(1)}%)`;
+            alertMessage += `\nOrder: ${taxonomyData.Order}`;
+            if (confidenceData.Order) alertMessage += ` (${(confidenceData.Order * 100).toFixed(1)}%)`;
+            alertMessage += `\nFamily: ${taxonomyData.Family}`;
+            if (confidenceData.Family) alertMessage += ` (${(confidenceData.Family * 100).toFixed(1)}%)`;
+            alertMessage += `\nGenus: ${taxonomyData.Genus}`;
+            if (confidenceData.Genus) alertMessage += ` (${(confidenceData.Genus * 100).toFixed(1)}%)`;
+            alertMessage += `\nSpecies: ${taxonomyData.Species}`;
+            if (confidenceData.Species) alertMessage += ` (${(confidenceData.Species * 100).toFixed(1)}%)`;
+            
+            // Show basic browser alert
+            alert(alertMessage);
+        }
+
+        // Add event listener to the form
+        taxonomyForm.addEventListener('submit', async function(event) {
+            event.preventDefault();
+            
+            // Get form data
+            const sequence = document.getElementById('sequence').value;
+            const filter_id = document.getElementById('filter_id').value;
+            const reads = parseInt(document.getElementById('reads').value);
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            btnText.innerHTML = '<span class="loading"></span> Analyzing...';
+            
+            try {
+                // Call backend API
+                const response = await fetch('http://127.0.0.1:8000/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        sequence: sequence,
+                        filter_id: filter_id,
+                        reads: reads
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Analysis failed');
+                }
+                
+                const result = await response.json();
+                
+                // Display results in the output box
+                let resultsHTML = '<div style="color:#64ffda;">';
+                resultsHTML += '<h3 style="margin-bottom:10px;">Taxonomy Classification:</h3>';
+                
+                const taxonomy = result.taxonomy;
+                const confidence = result.confidence;
+                
+                resultsHTML += '<div class="result-item">Kingdom: <span class="result-value">' + taxonomy.Kingdom + '</span> (' + (confidence.Kingdom * 100).toFixed(1) + '%)</div>';
+                resultsHTML += '<div class="result-item">Phylum: <span class="result-value">' + taxonomy.Phylum + '</span> (' + (confidence.Phylum * 100).toFixed(1) + '%)</div>';
+                resultsHTML += '<div class="result-item">Class: <span class="result-value">' + taxonomy.Class + '</span> (' + (confidence.Class * 100).toFixed(1) + '%)</div>';
+                resultsHTML += '<div class="result-item">Order: <span class="result-value">' + taxonomy.Order + '</span> (' + (confidence.Order * 100).toFixed(1) + '%)</div>';
+                resultsHTML += '<div class="result-item">Family: <span class="result-value">' + taxonomy.Family + '</span> (' + (confidence.Family * 100).toFixed(1) + '%)</div>';
+                resultsHTML += '<div class="result-item">Genus: <span class="result-value">' + taxonomy.Genus + '</span> (' + (confidence.Genus * 100).toFixed(1) + '%)</div>';
+                resultsHTML += '<div class="result-item">Species: <span class="result-value">' + taxonomy.Species + '</span> (' + (confidence.Species * 100).toFixed(1) + '%)</div>';
+                resultsHTML += '</div>';
+                
+                resultsContainer.innerHTML = resultsHTML;
+                
+                // Also show the taxonomy alert
+                showTaxonomyAlert(taxonomy, confidence);
+                
+            } catch (error) {
+                resultsContainer.innerHTML = '<div style="color:#ff6b6b;">Error: ' + error.message + '<br>Make sure the backend server is running at http://127.0.0.1:8000</div>';
+            } finally {
+                submitBtn.disabled = false;
+                btnText.innerHTML = 'Submit for Analysis';
+            }
+        });
+
+        // If you have an existing form submission function, you can modify it
+        // to also show the alert, or integrate the alert into your existing flow
+    </script>
+</body>
+</html>
