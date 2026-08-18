@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ocean Data Entry | Marine Research Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables for consistent theming */
+        :root {
+            --color-primary-dark: #0a192f;
+            --color-primary-medium: #14375c;
+            --color-accent: #64ffda;
+            --color-text-light: #ccd6f6;
+            --color-text-medium: #a8b2d1;
+            --color-text-dark: #8892b0;
+            --card-bg: rgba(23, 42, 69, 0.7);
+            --card-border: rgba(100, 255, 218, 0.1);
+            --transition-normal: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary-medium) 100%);
+            color: var(--color-text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--color-accent);
+            border-radius: 2px;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        
+        .logo-icon {
+            font-size: 2.8rem;
+            color: var(--color-accent);
+            margin-right: 15px;
+            text-shadow: 0 0 10px rgba(100, 255, 218, 0.5);
+        }
+        
+        .title-primary {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            color: var(--color-text-light);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: var(--color-text-dark);
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        .form-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 40px;
+            margin-top: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--color-text-medium);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            background: #0a192f;
+            border: 1px solid var(--card-border);
+            border-radius: 4px;
+            color: var(--color-text-light);
+            font-size: 1rem;
+            transition: var(--transition-normal);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--color-accent);
+            box-shadow: 0 0 8px rgba(100, 255, 218, 0.3);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .btn-primary {
+            display: inline-block;
+            padding: 12px 30px;
+            background: transparent;
+            color: var(--color-accent);
+            text-decoration: none;
+            border: 1px solid var(--color-accent);
+            border-radius: 4px;
+            transition: var(--transition-normal);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.1rem;
+        }
+        
+        .btn-primary:hover {
+            background: rgba(100, 255, 218, 0.1);
+        }
+
+        .btn-primary.submitted {
+            background-color: var(--color-accent);
+            color: var(--color-primary-dark);
+            border-color: var(--color-accent);
+            cursor: not-allowed;
+        }
+
+        .ocean-waves {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1200 120" xmlns="http://www.w3.org/2000/svg" fill="%2364ffda22"><path d="M0 0v46.29c47.79 22.2 103.59 32.17 158 28 70.36-5.37 136.33-33.31 206.8-37.5 73.84-4.36 147.54 16.88 218.2 35.26 69.27 18 138.3 24.88 209.4 13.08 36.15-6 69.85-17.84 104.45-29.34C989.49 25 1113-14.29 1200 52.47V0z" /></svg>');
+            background-repeat: repeat-x;
+            background-size: 1200px 100px;
+            animation: waves 15s linear infinite;
+            z-index: -2;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(100, 255, 218, 0.1);
+            z-index: -2;
+        }
+
+        @keyframes waves {
+            0% { background-position-x: 0; }
+            100% { background-position-x: 1200px; }
+        }
+        @keyframes rise {
+            0% { transform: translateY(0); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-110vh); opacity: 0; }
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .title-primary {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="ocean-waves"></div>
+    
+    <div class="container">
+        <header class="header">
+            <div class="logo-container">
+                <i class="fas fa-water logo-icon"></i>
+                <h1 class="title-primary">Ocean Data Entry</h1>
+            </div>
+            <p class="tagline">Submit your observational data to our global database.</p>
+        </header>
+        
+        <main>
+            <div class="form-container">
+                <form id="oceanForm" onsubmit="return submitForm(event)">
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="location">Location</label>
+                            <input type="text" id="location" name="location" placeholder="e.g., Great Barrier Reef" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="bleaching">Bleaching Severity</label>
+                            <select id="bleaching" name="bleaching" required>
+                                <option value="none">None</option>
+                                <option value="low">Low</option>
+                                <option value="moderate">Moderate</option>
+                                <option value="high">High</option>
+                                <option value="severe">Severe</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="heatwave">Marine Heatwave</label>
+                            <select id="heatwave" name="heatwave" required>
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="latitude">Latitude</label>
+                            <input type="number" id="latitude" name="latitude" step="0.0001" placeholder="e.g., -27.4698" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="longitude">Longitude</label>
+                            <input type="number" id="longitude" name="longitude" step="0.0001" placeholder="e.g., 153.0251" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sst">SST (°C)</label>
+                            <input type="number" id="sst" name="sst" step="0.1" placeholder="e.g., 29.5" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ph">pH Level</label>
+                            <input type="number" id="ph" name="ph" step="0.01" placeholder="e.g., 8.1" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="year">Year</label>
+                            <input type="number" id="year" name="year" placeholder="e.g., 2025" min="1900" max="2100" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="month">Month (1-12)</label>
+                            <input type="number" id="month" name="month" placeholder="e.g., 7" min="1" max="12" required>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="species">Species Observed</label>
+                            <textarea id="species" name="species" placeholder="List species, separated by commas..."></textarea>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <button type="submit" id="submitBtn" class="btn-primary">
+                                <span id="btnText">Submit Data</span>
+                            </button>
+                        </div>
+                    </div>
+                    <script>
+  async function submitForm(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const formData = new FormData(form);
+
+    const data = {};
+
+    formData.forEach((value, key) => {
+      if(key === 'heatwave') {
+        data['Marine Heatwave'] = (value === 'yes');
+      } else if(key === 'bleaching') {
+        // Capitalize first letter to match model labels
+        data['Bleaching Severity'] = value.charAt(0).toUpperCase() + value.slice(1);
+      } else if(key === 'location') {
+        data['Location'] = value;
+      }else if(key === 'latitude') {
+        data['Latitude'] = parseFloat(value);
+      } else if(key === 'longitude') {
+        data['Longitude'] = parseFloat(value);
+      }
+      else if(key === 'sst') {
+        data['SST (°C)'] = parseFloat(value);
+      } else if(key === 'ph') {
+        data['pH Level'] = parseFloat(value);
+      } else if(key === 'year') {
+        data['Year'] = parseInt(value);
+      } else if(key === 'month') {
+        data['Month'] = parseInt(value);
+      }
+    });
+
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Predicting...";
+
+    try {
+      const response = await fetch('http://127.0.0.1:8000/predict-ocean', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      });
+
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.statusText}`);
+      }
+
+      const result = await response.json();
+      alert(`Predicted Species Observed: ${result.predicted_species_observed.toFixed(2)}`);
+    } catch (error) {
+      alert(`Error: ${error.message}`);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit Data";
+      form.reset();
+    }
+
+    return false;
+  }
+</script>
+
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Animated Bubbles Script
+        document.addEventListener('DOMContentLoaded', function() {
+            const body = document.querySelector('body');
+            for (let i = 0; i < 20; i++) { createBubble(); }
+            function createBubble() {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                const size = Math.random() * 45 + 5;
+                const posX = Math.random() * 100;
+                const duration = Math.random() * 15 + 10;
+                const delay = Math.random() * 10;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${posX}vw`;
+                bubble.style.bottom = `-${size * 2}px`;
+                bubble.style.animation = `rise ${duration}s linear ${delay}s infinite`;
+                body.appendChild(bubble);
+            }
+        });
+
+        // Form Submission Script
+        const oceanForm = document.getElementById('oceanForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+    </script>
+</body>
+</html>

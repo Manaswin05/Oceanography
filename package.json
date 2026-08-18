@@ -1,0 +1,39 @@
+{
+  "name": "marine-research-portal",
+  "version": "1.0.0",
+  "description": "Marine Research Portal - Oceanography Analysis Platform",
+  "scripts": {
+    "prestart": "echo \"\n🌊 Marine Research Portal Starting...\n\" && echo \"🔵 Backend will run on: http://localhost:8000\" && echo \"🟢 Frontend will run on: http://localhost:5500\" && echo \"📚 API Docs: http://localhost:8000/docs\n\" && echo \"Press Ctrl+C to stop both servers\n\" && echo \"==========================================\n\"",
+    "start": "concurrently --kill-others --names \"BACKEND,FRONTEND\" --prefix-colors \"bgBlue.bold,bgGreen.bold\" \"npm run backend\" \"npm run frontend\"",
+    "backend": "cd backend_taxonomy && python -m uvicorn api:app --reload --host 127.0.0.1 --port 8000",
+    "frontend": "cd frontend_taxonomy && python -m http.server 5500",
+    "dev": "npm run start",
+    "backend-only": "npm run backend",
+    "frontend-only": "npm run frontend",
+    "postinstall": "echo \"\n✅ Dependencies installed! Run 'npm start' to begin.\n\""
+  },
+  "keywords": [
+    "marine",
+    "oceanography",
+    "taxonomy",
+    "research",
+    "fastapi",
+    "machine-learning"
+  ],
+  "author": "Marine Research Team",
+  "contributors": [
+    "Manaswin05"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Manaswin05/Oceanography.git"
+  },
+  "bugs": {
+    "url": "https://github.com/salil-kulkarni-03/Taxonomical_Analysis/issues"
+  },
+  "homepage": "https://github.com/Manaswin05/Oceanography#readme"
+}
