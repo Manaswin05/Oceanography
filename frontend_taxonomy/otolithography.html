@@ -534,6 +534,8 @@
     </div>
 
     <script>
+        const API_BASE = 'http://127.0.0.1:5000';   // ← change once if you move the server
+
         document.addEventListener('DOMContentLoaded', function() {
             // DOM Elements
             const uploadArea = document.getElementById('upload-area');
@@ -663,11 +665,11 @@
                 
                 // Create FormData for file upload
                 const formData = new FormData();
-                formData.append('file', currentImage);
+                formData.append('image', currentImage);   // Flask expects field name "image"
                 formData.append('analysis_type', selectedOption);
                 
                 // Call backend API
-                fetch('http://127.0.0.1:8000/analyze-image', {
+                fetch(`${API_BASE}/api/v1/analyze`, {
                     method: 'POST',
                     body: formData
                 })
@@ -676,23 +678,26 @@
                     // Display results
                     resultsPlaceholder.style.display = 'none';
                     analysisResults.style.display = 'block';
-                    
-                    // Update result fields with API response
-                    speciesResult.textContent = result.species || 'Unknown';
-                    familyResult.textContent = result.family || 'Unknown';
-                    characteristicsResult.textContent = result.characteristics || 'No data available';
-                    sizeResult.textContent = result.size || 'No data available';
-                    habitatResult.textContent = result.habitat || 'No data available';
-                    confidenceLevel.style.width = `${(result.confidence * 100)}%` || '0%';
-                    
+
+                    // Map Flask /api/v1/analyze response → display fields
+                    const sp   = result.species || {};
+                    const conf = result.keras?.confidence || result.opencv?.top_match?.score || 0;
+
+                    speciesResult.textContent         = sp.common_name    || sp.key || 'Unknown';
+                    familyResult.textContent          = sp.family         || 'Unknown';
+                    characteristicsResult.textContent = sp.description    || 'No data available';
+                    sizeResult.textContent            = sp.max_length_cm  ? `Max ${sp.max_length_cm} cm` : 'No data available';
+                    habitatResult.textContent         = sp.habitat_type   || sp.native_oceans?.join(', ') || 'No data available';
+                    confidenceLevel.style.width       = `${conf}%`;
+
                     // Reset button state
                     analyzeBtn.innerHTML = 'Analyze Image';
                     analyzeBtn.disabled = false;
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Analysis failed. Please make sure the backend server is running.');
-                    
+                    alert('Analysis failed. Make sure the Flask server is running at ' + API_BASE);
+
                     // Reset button state
                     analyzeBtn.innerHTML = 'Analyze Image';
                     analyzeBtn.disabled = false;

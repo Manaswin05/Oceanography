@@ -1,403 +1,216 @@
-# Marine Research Portal - Oceanography Analysis Platform
+# OceanVision 🐠
+### AI-Powered Marine Species Intelligence Platform
 
-A comprehensive web platform for marine biology research, featuring taxonomical analysis, oceanographic data collection, image analysis, and research datasets.
+A multi-model fish identification and oceanographic research web app — upload any fish photograph and get instant species ID, habitat mapping, migration routes, and ecological data.
 
-## � Project Structure
-
-```
-Taxonomical_Analysis/
-├── backend_taxonomy/          # Backend API Server
-│   ├── api.py                # Main FastAPI application
-│   ├── requirements.txt      # Python dependencies
-│   ├── taxonomy_model.h5     # Trained ML model
-│   └── artifacts/            # ML model artifacts
-│       ├── kmer_index.pkl
-│       ├── filter_encoder.pkl
-│       ├── reads_scaler.pkl
-│       └── label_encoders.pkl
-│
-└── frontend_taxonomy/         # Frontend Web Application
-    ├── index.html            # Main landing page (portal hub)
-    ├── taxonomy.html         # DNA sequence taxonomical analysis
-    ├── oc.html              # Ocean data entry & prediction
-    ├── otolithography.html  # Image analysis for marine specimens
-    └── stream.html          # Research datasets repository
-```
-
-## 🎯 Features
-
-### 1. **Taxonomical Analysis** (`taxonomy.html`)
-- DNA sequence analysis for species identification
-- 7-level taxonomy classification (Kingdom → Species)
-- Confidence scoring for each taxonomic level
-- Real-time API integration
-
-### 2. **Ocean Data Analysis** (`oc.html`)
-- Environmental data collection
-- Coral bleaching severity tracking
-- Marine heatwave monitoring
-- Species population prediction based on environmental factors
-
-### 3. **Image Analysis** (`otolithography.html`)
-- Upload marine specimen images
-- Three analysis modes:
-  - Taxonomical Analysis
-  - Otolithographical Analysis
-  - Habitat Analysis
-- Automated species identification with confidence scores
-
-### 4. **Research Database** (`stream.html`)
-- Browse and download marine research datasets
-- Filter by category (Temperature, Species, Water Quality, etc.)
-- Search functionality
-- Dataset metadata and descriptions
-
-## 🚀 Getting Started
-
-### Quick Start (Using Concurrently - Recommended!)
-
-**Prerequisites:**
-- Node.js installed ([Download](https://nodejs.org/))
-- Python 3.8+ installed ([Download](https://www.python.org/))
-
-**One-Command Startup:**
-
-```bash
-# 1. Install dependencies (first time only)
-npm install
-cd backend_taxonomy && pip install -r requirements.txt && cd ..
-
-# 2. Start both backend and frontend
-npm start
-```
-
-**Or use the startup scripts:**
-
-```bash
-# Windows
-start.bat
-
-# Linux/Mac
-chmod +x start.sh
-./start.sh
-```
-
-That's it! Both servers will start with color-coded output:
-- 🔵 Backend: http://127.0.0.1:8000
-- 🟢 Frontend: http://127.0.0.1:5500
-
-See `STARTUP_GUIDE.md` for detailed instructions.
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Manaswin05/Oceanography)
+[![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)](https://python.org)
+[![Flask](https://img.shields.io/badge/Flask-3.0-black?logo=flask)](https://flask.palletsprojects.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
 ---
 
-### Alternative: Manual Setup
+## What it does
 
-If you prefer to run servers separately:
+| Feature | Detail |
+|---|---|
+| **Fish identification** | YOLOv8n detection + MobileNetV2 species classification + 30-feature OpenCV morphological analysis |
+| **Interactive ocean map** | Leaflet.js with Esri Ocean tiles, habitat polygons, migration routes, species density heatmap |
+| **Species database** | Searchable encyclopaedia of Indian Ocean species with IUCN conservation status |
+| **DNA taxonomy** | k-mer vectorisation → 7-level taxonomic classification (Kingdom → Species) |
+| **Ocean data prediction** | Environmental parameters (SST, pH, bleaching severity) → predicted species count |
+| **Otolith analysis** | Research portal for CMLRE otolith image data |
 
-### Backend Setup
+---
 
-1. **Create Conda Environment:**
+## Tech stack
+
+**Backend** — Flask 3, TensorFlow 2.17 (Keras), Ultralytics YOLOv8, OpenCV, scikit-learn, Gunicorn  
+**Frontend** — Vanilla JS, Leaflet.js, Chart.js, Font Awesome, Google Fonts  
+**Deployment** — Render (web service), Gunicorn WSGI
+
+---
+
+## Local setup
+
+### Prerequisites
+- Python 3.11
+- Node.js 18+ (only needed for the `npm run dev` convenience script)
+- The three model weight files (see [Model weights](#model-weights) below)
+
+### Steps
+
 ```bash
-conda create -n taxonomy python=3.10 -y
-conda activate taxonomy
-```
+# 1. Clone
+git clone https://github.com/Manaswin05/Oceanography.git
+cd Oceanography
 
-2. **Install Python dependencies:**
-```bash
-cd backend_taxonomy
+# 2. Create virtual environment
+python -m venv .venv
+.venv\Scripts\activate        # Windows
+# source .venv/bin/activate   # macOS / Linux
+
+# 3. Install Python dependencies
 pip install -r requirements.txt
+
+# 4. Copy environment file and edit if needed
+copy .env.example .env
+
+# 5. Place model weights (see section below)
+#    models/fish_classifier_mobilenetv2.keras
+#    models/yolov8n.pt
+#    models/taxonomy_model.h5
+#    models/artifacts/kmer_index.pkl  (+ 3 other pkl files)
+
+# 6. (First time only) Generate taxonomy artifacts from the dataset
+python scripts/generate_artifacts.py
+
+# 7. Run
+python app.py
+# → http://127.0.0.1:5000
 ```
 
-3. **Prepare ML artifacts:**
-   - Ensure your trained models are in the `artifacts/` folder:
-     - `taxonomy_model.h5` (main model)
-     - `kmer_index.pkl`
-     - `filter_encoder.pkl`
-     - `reads_scaler.pkl`
-     - `label_encoders.pkl`
-
-4. **Start the backend server:**
+To run the legacy research portal pages alongside Flask:
 ```bash
-python -m uvicorn api:app --reload
+npm install
+npm run dev      # starts Flask on :5000 and http-server on :5500 concurrently
 ```
-
-The API will be available at: `http://127.0.0.1:8000`
-
-API Documentation: `http://127.0.0.1:8000/docs`
-
-### Frontend Setup
-
-1. **Serve the frontend files:**
-   
-   **Option A: Using Live Server (VSCode)**
-   - Install the "Live Server" extension
-   - Right-click `index.html` → "Open with Live Server"
-   - Default URL: `http://127.0.0.1:5500`
-
-   **Option B: Using Python HTTP Server**
-   ```bash
-   cd frontend_taxonomy
-   python -m http.server 5500
-   ```
-
-   **Option C: Open directly**
-   - Simply open `index.html` in your browser
-
-2. **Access the application:**
-   - Open browser to `http://127.0.0.1:5500/index.html`
-
-## 🔌 API Endpoints
-
-### Health Check
-```http
-GET http://127.0.0.1:8000/
-```
-Returns API status and available endpoints
-
-### Taxonomical Analysis
-```http
-POST http://127.0.0.1:8000/predict
-Content-Type: application/json
-
-{
-  "sequence": "ATCGATCGATCG...",
-  "filter_id": "sample-001-alpha",
-  "reads": 15000
-}
-```
-
-**Response:**
-```json
-{
-  "taxonomy": {
-    "Kingdom": "Eukaryota",
-    "Phylum": "Arthropoda",
-    "Class": "Hexanauplia",
-    "Order": "Calanoida",
-    "Family": "Paracalanidae",
-    "Genus": "Paracalanus",
-    "Species": "unassigned"
-  },
-  "confidence": {
-    "Kingdom": 0.98,
-    "Phylum": 0.95,
-    "Class": 0.92,
-    "Order": 0.90,
-    "Family": 0.88,
-    "Genus": 0.85,
-    "Species": 0.80
-  }
-}
-```
-
-### Ocean Data Prediction
-```http
-POST http://127.0.0.1:8000/predict-ocean
-Content-Type: application/json
-
-{
-  "Location": "Great Barrier Reef",
-  "Latitude": -27.4698,
-  "Longitude": 153.0251,
-  "SST": 29.5,
-  "pH_Level": 8.1,
-  "Year": 2025,
-  "Month": 7,
-  "Bleaching_Severity": "Moderate",
-  "Marine_Heatwave": false
-}
-```
-
-**Response:**
-```json
-{
-  "predicted_species_observed": 42.50,
-  "location": "Great Barrier Reef",
-  "status": "success"
-}
-```
-
-### Image Analysis
-```http
-POST http://127.0.0.1:8000/analyze-image
-Content-Type: multipart/form-data
-
-file: <image_file>
-analysis_type: "taxonomy" | "otolith" | "habitat"
-```
-
-**Response:**
-```json
-{
-  "species": "Thunnus albacares (Yellowfin Tuna)",
-  "family": "Scombridae",
-  "characteristics": "Yellow finlets, elongated dorsal and anal fins, metallic dark blue back",
-  "size": "Estimated 1.2m length, 25kg weight",
-  "habitat": "Tropical and subtropical oceans worldwide",
-  "confidence": 0.92
-}
-```
-
-## 🎨 Design Theme
-
-The platform features a modern oceanography-inspired design:
-- **Colors:** Deep blue gradient background (#0a192f → #14375c) with cyan accents (#64ffda)
-- **Animations:** Floating bubbles, wave animations
-- **UI:** Glassmorphism cards with hover effects
-- **Responsive:** Mobile-friendly grid layouts
-- **Icons:** Font Awesome 6.4.0
-
-## 🛠 Technology Stack
-
-### Backend
-- **FastAPI** - Modern Python web framework
-- **TensorFlow/Keras** - Machine learning models
-- **NumPy** - Numerical computing
-- **Joblib** - Model serialization
-- **Pydantic** - Data validation
-- **Uvicorn** - ASGI server
-
-### Frontend
-- **HTML5/CSS3** - Structure and styling
-- **Vanilla JavaScript** - Interactive functionality
-- **Font Awesome** - Icon library
-- **Fetch API** - Backend communication
-
-## 📊 Data Models
-
-### Taxonomy Input
-```python
-{
-  "sequence": str,      # DNA sequence (ATCG format)
-  "filter_id": str,     # Sample identifier
-  "reads": int          # Number of reads
-}
-```
-
-### Ocean Data Input
-```python
-{
-  "Location": str,
-  "Latitude": float,
-  "Longitude": float,
-  "SST": float,                    # Sea Surface Temperature (°C)
-  "pH_Level": float,
-  "Year": int,
-  "Month": int,                    # 1-12
-  "Bleaching_Severity": str,       # None/Low/Moderate/High/Severe
-  "Marine_Heatwave": bool
-}
-```
-
-## 🔧 Configuration
-
-### CORS Settings
-The backend is configured to accept requests from:
-- `http://127.0.0.1:5500`
-- `http://localhost:5500`
-- `http://127.0.0.1:8000`
-- `http://localhost:8000`
-- `*` (all origins - development only)
-
-To modify CORS settings, edit `backend_taxonomy/api.py`:
-```python
-origins = [
-    "your-frontend-url",
-    "*"  # Allow all (development only)
-]
-```
-
-## 📝 Development Notes
-
-### Current Implementation Status
-
-✅ **Fully Implemented:**
-- Complete frontend UI for all 5 modules
-- Backend API structure with FastAPI
-- CORS configuration
-- Frontend-backend integration
-- Taxonomical analysis with ML model
-- File upload handling
-
-⚠️ **Placeholder/Mock Functions:**
-- Ocean data prediction (uses simple rule-based logic)
-- Image analysis (returns static responses)
-
-🔄 **Ready for Real Models:**
-Replace placeholder logic in:
-- `/predict-ocean` endpoint
-- `/analyze-image` endpoint
-
-## 🧠 Model Workflow (Taxonomy)
-
-1. Input DNA sequence is converted into **k-mers** (k=4)
-2. K-mers are vectorized using **precomputed indices**
-3. Metadata (`filter_id`, `reads`) is **encoded and scaled**
-4. Combined features are passed into the **trained neural network**
-5. Output predictions are **decoded into taxonomy labels**
-6. Confidence scores are calculated for each taxonomic level
-
-## � Troubleshooting
-
-### Backend won't start
-- Ensure all dependencies are installed: `pip install -r requirements.txt`
-- Check Python version (3.8+ recommended, 3.10 tested)
-- Verify port 8000 is not in use
-- Ensure model files exist in correct paths
-
-### Frontend can't connect to backend
-- Verify backend is running at `http://127.0.0.1:8000`
-- Check browser console for CORS errors
-- Ensure correct API URLs in frontend files (should be `http://127.0.0.1:8000`)
-- Try accessing `/docs` endpoint to verify API is running
-
-### Model not found errors
-- Verify `taxonomy_model.h5` exists in `backend_taxonomy/`
-- Create `artifacts/` folder in `backend_taxonomy/`
-- Place all `.pkl` files in artifacts folder
-- Verify file names match code references exactly
-
-### CORS errors
-- Ensure backend CORS middleware is configured
-- Check that frontend URL is in the `origins` list
-- Clear browser cache and restart both servers
-
-## 📌 Future Enhancements
-
-- [ ] Docker containerization
-- [ ] User authentication and authorization
-- [ ] Database integration for storing analysis results
-- [ ] Batch predictions for multiple sequences
-- [ ] Advanced data visualizations
-- [ ] Real ML models for ocean data prediction
-- [ ] Actual computer vision models for image analysis
-- [ ] Export reports as PDF
-- [ ] Cloud deployment (AWS/Azure/GCP)
-- [ ] Real-time collaboration features
-
-## 📜 License
-
-This project is part of the Global Marine Conservation Initiative.
-
-## 👥 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Create a Pull Request
-
-## 🙏 Acknowledgments
-
-- Marine Biology Research Community
-- TensorFlow and FastAPI teams
-- Font Awesome for icons
-- Global Marine Conservation Initiative
-
-## 📧 Contact
-
-For questions or support, please contact the Marine Research Portal team.
 
 ---
 
-**Marine Research Portal** | Advanced Oceanography Analysis Platform © 2025
+## Model weights
+
+The binary model files are **not stored in git** (too large). You have two options:
+
+### Option A — Manual copy
+Place the files into `models/`:
+```
+models/
+  fish_classifier_mobilenetv2.keras   (~14 MB)
+  yolov8n.pt                          (~6 MB)
+  taxonomy_model.h5                   (~varies)
+  artifacts/
+    kmer_index.pkl
+    filter_encoder.pkl
+    reads_scaler.pkl
+    label_encoders.pkl
+```
+
+### Option B — External storage + env vars
+Host the files on Google Drive / HuggingFace Hub / S3, then set these env vars and run `scripts/download_models.py` at build time:
+```
+KERAS_MODEL_URL=https://...
+YOLO_MODEL_URL=https://...
+TAXONOMY_MODEL_URL=https://...
+ARTIFACTS_URL=https://...   # tar.gz of the artifacts/ folder
+```
+
+> The app **starts and serves immediately** even without model weights — it gracefully falls back to OpenCV-only analysis. Set `FLASK_ENV=development` to skip the production guards.
+
+---
+
+## Deploy on Render
+
+The repo ships with a `render.yaml` that configures everything automatically.
+
+### Steps
+
+1. Push this repo to GitHub (your `Manaswin05/Oceanography` repo).
+
+2. Go to [dashboard.render.com](https://dashboard.render.com) → **New → Web Service → Connect a repository**.
+
+3. Select `Manaswin05/Oceanography`. Render will detect `render.yaml` and pre-fill all settings.
+
+4. Set your model weight env vars in **Environment** (or upload weights to a Render Disk — see below).
+
+5. Click **Deploy**.
+
+### Render persistent disk (recommended for model weights)
+
+On the Render dashboard for your service:
+- **Disks** → **Add Disk** → mount path `/opt/render/project/src/models` → 1 GB
+- Upload your `.keras`, `.pt`, `.h5`, and `.pkl` files via SFTP or the Render Shell.
+
+The app reads weights from `models/` at startup — no env vars needed if the disk is mounted at that path.
+
+### Important Render notes
+
+| Thing | Why it matters |
+|---|---|
+| **Plan: Starter ($7/mo)** | Free tier only has 512 MB RAM — TensorFlow alone needs ~1.2 GB. Upgrade to Starter. |
+| **`--workers 1`** | Each worker loads a full TF session. 1 worker + 4 threads is the right balance on Starter. |
+| **`--preload`** | Loads the app once before forking threads — saves ~400 MB vs per-worker loading. |
+| **`--timeout 120`** | TF model loading can take 30–60 s on a cold start. |
+| **Health check** | Render pings `/api/v1/health` to confirm the service is up. The background model loader means this responds immediately even while Keras is still loading. |
+
+---
+
+## Project structure
+
+```
+OceanVision/
+├── app.py                  ← Dev entry point
+├── wsgi.py                 ← Production WSGI (Gunicorn / Render)
+├── config.py               ← Environment-based config factory
+├── render.yaml             ← Render deployment config
+├── Procfile                ← Fallback for Heroku-style hosts
+├── requirements.txt
+│
+├── app/
+│   ├── factory.py          ← create_app() — two-phase startup
+│   ├── controllers/        ← Flask blueprints (health, vision, taxonomy, ocean, species, pages)
+│   ├── models/
+│   │   └── registry.py     ← Thread-safe ModelRegistry (phase-1 light, phase-2 background)
+│   └── services/           ← Business logic (vision, taxonomy, ocean, species)
+│
+├── core/
+│   ├── feature_extractor.py  ← 30-feature OpenCV morphological extractor
+│   └── fish_db.py            ← Hardcoded species database + scoring
+│
+├── models/                 ← Model weights (gitignored — place manually or download)
+│   └── artifacts/          ← Taxonomy pkl artifacts
+│
+├── templates/index.html    ← OceanVision SPA (Jinja2)
+├── static/
+│   ├── css/style.css
+│   └── js/main.js
+│
+├── frontend_taxonomy/      ← Legacy research portal (DNA taxonomy, ocean data, otolith)
+├── data/                   ← CSV datasets (ASV table, ocean climate, otolith metadata)
+└── scripts/
+    ├── generate_artifacts.py   ← Builds taxonomy pkl files from asv_table.csv
+    └── verify_setup.py         ← Checks all deps and model files
+```
+
+---
+
+## API endpoints
+
+| Method | Path | Description |
+|---|---|---|
+| `GET` | `/api/v1/health` | Full model status + species count |
+| `GET` | `/api/v1/ready` | Lightweight readiness probe (polled by loading screen) |
+| `POST` | `/api/v1/analyze` | Fish image analysis (multipart, field: `image`) |
+| `POST` | `/api/v1/predict` | DNA taxonomy prediction (JSON) |
+| `POST` | `/api/v1/predict-ocean` | Ocean environment → species count (JSON) |
+| `GET` | `/api/v1/species` | List all species (`?query=&habitat=`) |
+| `GET` | `/api/v1/species/<key>` | Single species by key |
+| `GET` | `/api/v1/map-data` | Lightweight species list for Leaflet map |
+
+---
+
+## Environment variables
+
+| Variable | Default | Description |
+|---|---|---|
+| `FLASK_ENV` | `development` | `development` or `production` |
+| `SECRET_KEY` | auto-generated | Flask session secret (set a real value in production) |
+| `FLASK_PORT` | `5000` | Port for dev server |
+| `FLASK_DEBUG` | `true` | Enable Flask debug mode |
+| `PORT` | `5000` | Used by Render / Gunicorn |
+
+---
+
+## License
+
+MIT © [Manaswin](https://github.com/Manaswin05)

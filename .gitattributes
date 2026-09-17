@@ -1,0 +1,15 @@
+﻿# Force LF line endings for all text files
+* text=auto eol=lf
+
+# Binaries — no line ending conversion
+*.keras binary
+*.h5    binary
+*.pt    binary
+*.pkl   binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.ico   binary
+*.pptx  binary
+*.pdf   binary

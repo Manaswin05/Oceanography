@@ -1,0 +1,33 @@
+# ─────────────────────────────────────────────
+# OceanVision — Flask app (app.py, port 5000)
+#
+# Install: pip install -r requirements.txt
+# ─────────────────────────────────────────────
+
+# ── Web framework ──────────────────────────
+flask==3.0.3
+flask-cors==4.0.1
+werkzeug==3.0.3
+python-multipart==0.0.9
+
+# ── Data / ML ──────────────────────────────
+numpy==1.26.4
+pandas==2.2.2
+scikit-learn==1.5.1
+joblib==1.4.2
+
+# ── Deep learning ──────────────────────────
+tensorflow==2.17.0
+
+# ── Computer vision ────────────────────────
+opencv-python==4.10.0.84
+Pillow==10.4.0
+
+# ── YOLO (Ultralytics) ─────────────────────
+ultralytics==8.2.83
+
+# ── WSGI server (production / Render) ──────
+gunicorn==22.0.0
+
+# ── Utilities ──────────────────────────────
+python-dotenv==1.0.1

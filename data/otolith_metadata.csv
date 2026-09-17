@@ -1,0 +1,38 @@
+otolithID,image_filename,scientificName,family,Locality,decimalLatitude,decimalLongitude,Collection_Depth,Collection_Date,Lifestage,Habitat,Platform
+CMLRE/OTL/00030,CMLREOTL00030_Alepocephalus_bicolor,Alepocephalus bicolor,Alepocephalidae,Off South-West Andaman,11.16505,92.31768333,576,4/4/2016,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00006,CMLREOTL00006_Alepocephalus_blanfordii,Alepocephalus blanfordii,Alepocephalidae,Off Trivandrum,8.333083333,76.1752,949,10/26/2017,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00009,CMLREOTL00009_Aphanopus_microphthalmus,Aphanopus microphthalmus,Trichiuridae,Off Trivandrum,8.333083333,76.1752,949,10/26/2017,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00017,CMLREOTL00017_Atrobucca_nibe,Atrobucca nibe,Scinaenidae,Off Gujarat,20.31598333,69.38733333,247,2/24/2018,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00034,CMLREOTL00034_Bathyclupea_elongata,Bathyclupea elongata,Bathyclupeidae,Off Trivandrum,8.3845,76.11295,1065,9/23/2020,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00011,CMLREOTL00011_Bathypterois_atricolor,Bathypterois atricolor,Ipnopidae,Terrace of Trivandrum,8.333083333,76.1752,949,10/26/2017,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00010,CMLREOTL00010_Bathyuroconger_vicinus,Bathyuroconger vicinus,Congridae,Off Trivandrum,8.333083333,76.1752,949,10/26/2017,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00020,CMLREOTL00020_Bembrops_caudimacula,Bembrops caudimacula,Percophidae,Off Allapuzha,12.14111667,74.35111667,238,4/22/2018,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00016,CMLREOTL00016_Beryx_splendens,Beryx splendens,Berycidae,Off Allapuzha,9.4827,75.7062,327,3/3/2018,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00003,CMLREOTL00003_Chlorophthalmus_actifrons,Chlorophthalmus actifrons,Chlorophthalmidae,Off East Andaman,12.54233333,93.14616667,300,4/10/2016,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00028,CMLREOTL00028_Chlorophthalmus_corniger,Chlorophthalmus corniger,Chlorophthalmidae,Off South Andaman,9.625483333,92.73631667,362,4/6/2016,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00032,CMLREOTL00032_Coloconger_raniceps,Coloconger raniceps,Colocongridae,Off Trivandrum,8.199383333,76.5315,566,9/24/2020,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00027,CMLREOTL00027_Cubiceps_baxteri,Cubiceps baxteri,Nomeidae,Off South Andaman,12.54233333,93.14616667,300,4/10/2016,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00029,CMLREOTL00029_Diretmoides_veriginae,Diretmoides veriginae,Diretmidae,Off South-West Andaman,11.16505,92.31768333,576,4/4/2016,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00036,CMLREOTL00036_Gavialiceps_taeniola,Gavialiceps taeniola,Muraenesocidae,Off Karwar,14.494,73.05366667,952,10/5/2020,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00012,CMLREOTL00012_Gephyroberys_darwinii,Gephyroberys darwinii,Trachichthyidae,Off East Andaman,12.52595,93.16238333,314,11/25/2017,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00014,CMLREOTL00014_Grammoplites_suppositus,Grammoplites suppositus,Platycephalidae,Off East Andaman,22.35166667,68.05533333,72,2/22/2018,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00005,CMLREOTL00005_Hoplostethus_melanopus,Hoplostethus melanopus,Trachichthyidae,Off Trivandrum,12.54233333,93.14616667,949,10/26/2017,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00024,CMLREOTL00024_Hoplostethus_rubellopterus,Hoplostethus rubellopterus,Trachichthyidae,Off Malappuram,10.94168333,75.12965,352,4/20/2015,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00031,CMLREOTL00031_Lamprogrammus_fragilis,Lamprogrammus fragilis,Neobythitinae,Off Karwar,14.494,73.05366667,952,10/5/2020,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00008,CMLREOTL00008_Lamprogrammus_niger,Lamprogrammus niger,Ophidiidae,Off Trivandrum,8.333083333,76.1752,949,10/26/2017,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00007,CMLREOTL00007_Narcetes_stomias,Narcetes stomias,Alepocephalidae,Off Trivandrum,8.333083333,76.1752,949,10/26/2017,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00018,CMLREOTL00018_Nemipterus_japonicus,Nemipterus japonicus,Nemipteridae,Off Allapuzha,9.39485,75.91491667,87,3/4/2018,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00021,CMLREOTL00021_Neoepinnula_orientalis,Neoepinnula orientalis,Gempylidae,Off Chennai,13.2232,80.5814,203,3/9/2020,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00026,CMLREOTL00026_Ostracoberx_dorygenys,Ostracoberx dorygenys,Ostracoberycidae,Off South Andaman,9.625483333,92.73631667,362,4/6/2016,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00022,CMLREOTL00022_Physiculus_roseus,Physiculus roseus,Moridae,Off Chennai,13.2232,80.5814,203,3/9/2020,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00004,CMLREOTL00004_Polymixia_fusca,Polymixia fusca,Polymixiidae,Off East Andaman,12.54233333,93.14616667,300,4/10/2016,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00037,CMLREOTL00037_Psenopsis_cyanea,Psenopsis cyanea,Centrolophidae,Off Kannur,11.95528333,74.43468333,200,9/1/2014,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00002,CMLREOTL00002_Psenopsis_obscura,Psenopsis obscura,Centrolophidae,Off East Andaman,12.54233333,93.14616667,300,4/10/2016,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00019,CMLREOTL00019_Pterygotrigla_hemistica,Pterygotrigla hemistica,Triglidae,Off Allapuzha,12.14111667,74.35111667,238,4/22/2018,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00015,CMLREOTL00015_Rexea_prometheoides,Rexea prometheoides,Gempylidae,Off Allapuzha,9.4827,75.7062,327,3/3/2018,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00025,CMLREOTL00025_Satyrichthys_milleri,Satyrichthys milleri,Peristediidae,Off North-East Andaman,13.25533333,93.1735,332,4/11/2016,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00013,CMLREOTL00013_Saurida_tumbil,Saurida tumbil,Synodontidae,Off East Andaman,22.35166667,68.05533333,72,2/22/2018,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00001,CMLREOTL00001_Synagrops_japonicus,Synagrops japonicus,Acropomatidae,Off South Andaman,11.16505,92.31768333,591,4/5/2016,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00035,CMLREOTL00035_Talismania_longifilis,Talismania longifilis,Alepocephalidae,Off Trivandrum,8.3845,76.11295,1065,9/23/2020,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00023,CMLREOTL00023_Trichurus_lepturus,Trichurus lepturus,Trichiuridae,Off Chennai,13.2232,80.5814,203,3/9/2020,Adult,Nektonic,Sagar Sampada
+CMLRE/OTL/00033,CMLREOTL00033_Xenomystax_trucidans,Xenomystax trucidans,Congridae,Off Trivandrum,8.199383333,76.5315,566,9/24/2020,Adult,Nektonic,Sagar Sampada

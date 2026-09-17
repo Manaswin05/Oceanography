@@ -1,0 +1,59 @@
+# ─────────────────────────────────────────────────────────────
+#  render.yaml — OceanVision deployment on Render
+#  Docs: https://render.com/docs/render-yaml-reference
+#
+#  IMPORTANT — model weights are NOT in the repo (gitignored).
+#  Upload them manually to Render's persistent disk or set the
+#  download URL env vars and run scripts/download_models.py
+#  as the build command before gunicorn starts.
+# ─────────────────────────────────────────────────────────────
+
+services:
+  - type: web
+    name: oceanvision
+    runtime: python
+    region: singapore          # closest to Indian Ocean research focus
+    plan: starter              # upgrade to standard for more RAM (TF needs ~1.5 GB)
+
+    # ── Build ────────────────────────────────────────────────
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+
+    # ── Start ────────────────────────────────────────────────
+    # --preload: loads the app once then forks workers (saves RAM)
+    # --timeout 120: TF model loading can take > 30 s
+    # --workers 1: TF + YOLO are heavy; 1 worker avoids OOM on free tier
+    startCommand: >
+      gunicorn wsgi:application
+      --bind 0.0.0.0:$PORT
+      --workers 1
+      --threads 4
+      --timeout 120
+      --preload
+      --access-logfile -
+      --error-logfile -
+
+    # ── Health check ─────────────────────────────────────────
+    healthCheckPath: /api/v1/health
+
+    # ── Environment variables ─────────────────────────────────
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: SECRET_KEY
+        generateValue: true       # Render generates a random secret at deploy time
+      - key: PYTHON_VERSION
+        value: 3.11.0
+
+      # ── Optional: model download URLs ────────────────────
+      # Set these in the Render dashboard if you host weights externally.
+      # The build script (scripts/download_models.py) reads these.
+      # - key: KERAS_MODEL_URL
+      #   value: https://your-storage/fish_classifier_mobilenetv2.keras
+      # - key: YOLO_MODEL_URL
+      #   value: https://your-storage/yolov8n.pt
+      # - key: TAXONOMY_MODEL_URL
+      #   value: https://your-storage/taxonomy_model.h5
+      # - key: ARTIFACTS_URL
+      #   value: https://your-storage/artifacts.tar.gz

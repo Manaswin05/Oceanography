@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OceanVision — Marine Fish Intelligence Platform</title>
+
+  <!-- Leaflet.js -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Leaflet Plugins -->
+  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     APP LOADING SCREEN
+     Shown on first visit while the backend warms up.
+     Dismissed by main.js once /api/v1/ready reports done.
+═══════════════════════════════════════════════════════ -->
+<div id="appLoader" class="app-loader" aria-live="polite" aria-label="Application loading">
+  <div class="al-bg">
+    <div class="al-bubbles">
+      <div class="al-bubble"></div><div class="al-bubble"></div>
+      <div class="al-bubble"></div><div class="al-bubble"></div>
+      <div class="al-bubble"></div>
+    </div>
+    <div class="al-wave al-wave1"></div>
+    <div class="al-wave al-wave2"></div>
+  </div>
+
+  <div class="al-card">
+    <!-- Brand -->
+    <div class="al-brand">
+      <div class="al-fish-icon">
+        <i class="fas fa-fish"></i>
+        <div class="al-sonar"></div>
+      </div>
+      <h1 class="al-title">Ocean<span>Vision</span></h1>
+      <p class="al-subtitle">Marine Intelligence Platform</p>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="al-progress-wrap" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="alProgressBar">
+      <div class="al-progress-track">
+        <div class="al-progress-fill" id="alProgressFill"></div>
+        <div class="al-progress-shimmer"></div>
+      </div>
+      <span class="al-progress-pct" id="alProgressPct">0%</span>
+    </div>
+
+    <!-- Step list -->
+    <ul class="al-steps" id="alSteps" aria-label="Loading steps">
+      <li class="al-step al-step--loading" id="alStep-fish_db" data-key="fish_db">
+        <span class="al-step-icon"><i class="fas fa-database"></i></span>
+        <span class="al-step-label">Fish database</span>
+        <span class="al-step-badge">–</span>
+      </li>
+      <li class="al-step al-step--waiting" id="alStep-keras" data-key="keras">
+        <span class="al-step-icon"><i class="fas fa-brain"></i></span>
+        <span class="al-step-label">MobileNetV2 classifier</span>
+        <span class="al-step-badge">–</span>
+      </li>
+      <li class="al-step al-step--waiting" id="alStep-yolo" data-key="yolo">
+        <span class="al-step-icon"><i class="fas fa-vector-square"></i></span>
+        <span class="al-step-label">YOLOv8n detector</span>
+        <span class="al-step-badge">–</span>
+      </li>
+      <li class="al-step al-step--waiting" id="alStep-map" data-key="map">
+        <span class="al-step-icon"><i class="fas fa-map-marked-alt"></i></span>
+        <span class="al-step-label">Ocean map data</span>
+        <span class="al-step-badge">–</span>
+      </li>
+    </ul>
+
+    <!-- Status message -->
+    <p class="al-status-msg" id="alStatusMsg">Initialising systems…</p>
+
+    <!-- Skip button — lets users jump in while models are still loading -->
+    <button class="al-skip-btn" id="alSkipBtn" style="display:none" aria-label="Skip model loading and enter the app">
+      <i class="fas fa-arrow-right"></i> Enter (models still loading)
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     NAVBAR
+═══════════════════════════════════════════════════════ -->
+<nav class="navbar">
+  <div class="nav-brand">
+    <span class="nav-logo"><i class="fas fa-fish"></i></span>
+    <span class="nav-title">Ocean<span class="accent">Vision</span></span>
+    <span class="nav-sub">Marine Intelligence Platform</span>
+  </div>
+  <div class="nav-links">
+    <a href="#upload-section" class="nav-link active"><i class="fas fa-upload"></i> Analyze</a>
+    <a href="#map-section"    class="nav-link"><i class="fas fa-map-marked-alt"></i> Ocean Map</a>
+    <a href="#species-section" class="nav-link"><i class="fas fa-database"></i> Species DB</a>
+    <a href="#about-section"  class="nav-link"><i class="fas fa-info-circle"></i> About</a>
+    <!-- ── Legacy research portal pages ── -->
+    <a href="/frontend/taxonomy.html" class="nav-link" target="_blank" title="DNA Taxonomy Analysis">
+      <i class="fas fa-dna"></i> Taxonomy
+    </a>
+    <a href="/frontend/oc.html" class="nav-link" target="_blank" title="Ocean Data Prediction">
+      <i class="fas fa-water"></i> Ocean Data
+    </a>
+    <a href="/frontend/otolithography.html" class="nav-link" target="_blank" title="Otolith Image Analysis">
+      <i class="fas fa-microscope"></i> Otolith
+    </a>
+    <a href="/frontend/stream.html" class="nav-link" target="_blank" title="Research Datasets">
+      <i class="fas fa-table"></i> Datasets
+    </a>
+  </div>
+  <div class="nav-status">
+    <span class="status-dot" id="systemStatus"></span>
+    <span id="statusText">Connecting…</span>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════
+     HERO BANNER
+═══════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="bubbles">
+      <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+      <div class="bubble"></div><div class="bubble"></div><div class="bubble"></div>
+      <div class="bubble"></div><div class="bubble"></div>
+    </div>
+    <div class="wave-layer wave1"></div>
+    <div class="wave-layer wave2"></div>
+  </div>
+  <div class="hero-content">
+    <h1 class="hero-title">
+      Decoding the Deep<br>
+      <span class="hero-sub">AI-Powered Marine Species Intelligence</span>
+    </h1>
+    <p class="hero-desc">
+      Upload any fish photograph and let our multi-model AI — YOLOv8, MobileNetV2, and custom OpenCV feature analysis —
+      instantly identify the species, reveal its habitat, migration routes, and ecological role.
+    </p>
+    <div class="hero-stats">
+      <div class="stat-pill"><i class="fas fa-database"></i> <span id="heroSpeciesCount">—</span> Species</div>
+      <div class="stat-pill"><i class="fas fa-brain"></i> 3 AI Models</div>
+      <div class="stat-pill"><i class="fas fa-globe"></i> Global Mapping</div>
+    </div>
+    <a href="#upload-section" class="hero-cta">
+      <i class="fas fa-microscope"></i> Start Analysis
+    </a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     UPLOAD + RESULTS SECTION
+═══════════════════════════════════════════════════════ -->
+<section id="upload-section" class="section">
+  <div class="section-header">
+    <h2><i class="fas fa-upload"></i> Fish Image Analysis</h2>
+    <p>Drop an image or click to upload. The AI pipeline will run within seconds.</p>
+  </div>
+
+  <div class="upload-results-grid">
+
+    <!-- LEFT: Drop zone -->
+    <div class="upload-panel">
+      <div class="drop-zone" id="dropZone">
+        <div class="drop-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+        <p class="drop-title">Drag &amp; Drop Your Fish Image</p>
+        <p class="drop-hint">PNG, JPG, JPEG, WEBP — up to 16 MB</p>
+        <button class="btn-upload" onclick="document.getElementById('fileInput').click()">
+          <i class="fas fa-folder-open"></i> Browse File
+        </button>
+        <input type="file" id="fileInput" accept="image/*" hidden />
+      </div>
+
+      <!-- Preview -->
+      <div class="preview-box" id="previewBox" style="display:none">
+        <div class="preview-header">
+          <span><i class="fas fa-image"></i> Uploaded Image</span>
+          <button class="btn-clear" id="clearBtn"><i class="fas fa-times"></i> Clear</button>
+        </div>
+        <img id="previewImg" src="" alt="Preview" class="preview-img" />
+        <div class="preview-meta" id="previewMeta"></div>
+        <button class="btn-analyze" id="analyzeBtn">
+          <i class="fas fa-search"></i> Run Full Analysis
+        </button>
+      </div>
+    </div>
+
+    <!-- RIGHT: Analysis progress + results -->
+    <div class="results-panel" id="resultsPanel">
+
+      <!-- Loading state -->
+      <div class="loading-overlay" id="loadingOverlay" style="display:none">
+        <div class="sonar-ring"></div>
+        <p class="loading-text">Scanning the deep…</p>
+        <div class="progress-stages">
+          <div class="stage-item" id="stage-yolo"><i class="fas fa-circle-notch fa-spin"></i> YOLOv8 Detection</div>
+          <div class="stage-item" id="stage-keras"><i class="fas fa-circle-notch fa-spin"></i> MobileNetV2 Classification</div>
+          <div class="stage-item" id="stage-opencv"><i class="fas fa-circle-notch fa-spin"></i> OpenCV Feature Analysis</div>
+          <div class="stage-item" id="stage-db"><i class="fas fa-circle-notch fa-spin"></i> Species DB Lookup</div>
+        </div>
+      </div>
+
+      <!-- Empty state -->
+      <div class="empty-state" id="emptyState">
+        <i class="fas fa-fish empty-icon"></i>
+        <p>Upload a fish image to begin analysis</p>
+        <small>Supports reef fish, deep-sea species, sharks, rays and more</small>
+      </div>
+
+      <!-- ── Results (hidden until analysis) ── -->
+      <div id="analysisResults" style="display:none">
+
+        <!-- Species Hero Card -->
+        <div class="species-hero-card" id="speciesCard">
+          <div class="species-badge" id="speciesBadge"></div>
+          <div class="species-info">
+            <h3 id="speciesCommon" class="species-common"></h3>
+            <p id="speciesScientific" class="species-scientific"></p>
+            <div class="species-tags" id="speciesTags"></div>
+          </div>
+          <div class="confidence-ring-wrap">
+            <canvas id="confRing" width="90" height="90"></canvas>
+            <div class="conf-label" id="confLabel">—%</div>
+          </div>
+        </div>
+
+        <!-- Model Confidence Bar -->
+        <div class="results-grid">
+          <div class="result-card">
+            <div class="card-header"><i class="fas fa-vector-square"></i> YOLO Detections</div>
+            <div id="yoloResults" class="card-body"></div>
+          </div>
+          <div class="result-card">
+            <div class="card-header"><i class="fas fa-brain"></i> Neural Network</div>
+            <div id="kerasResults" class="card-body"></div>
+          </div>
+        </div>
+
+        <!-- Feature Radar -->
+        <div class="result-card full-width">
+          <div class="card-header"><i class="fas fa-chart-radar"></i> OpenCV Feature Profile</div>
+          <div class="chart-wrap">
+            <canvas id="featureChart"></canvas>
+          </div>
+          <div class="opencv-overlay-wrap">
+            <p class="overlay-label">Contour Analysis</p>
+            <img id="opencvOverlay" src="" alt="Contour" class="opencv-overlay" />
+          </div>
+        </div>
+
+        <!-- Match Scores -->
+        <div class="result-card full-width">
+          <div class="card-header"><i class="fas fa-sort-amount-down"></i> Top Species Matches</div>
+          <div id="matchScores" class="match-list"></div>
+        </div>
+
+        <!-- Species Encyclopedia Entry -->
+        <div class="result-card full-width species-detail-card" id="speciesDetailCard">
+          <div class="card-header"><i class="fas fa-book-open"></i> Species Encyclopedia</div>
+          <div id="speciesDetail" class="species-detail-body"></div>
+        </div>
+
+        <!-- Quick-jump to map -->
+        <button class="btn-map-jump" id="mapJumpBtn">
+          <i class="fas fa-map-marked-alt"></i> View on Ocean Map
+        </button>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     OCEAN MAP SECTION
+═══════════════════════════════════════════════════════ -->
+<section id="map-section" class="section">
+  <div class="section-header">
+    <h2><i class="fas fa-globe-asia"></i> Ocean Distribution &amp; Migration Atlas</h2>
+    <p>Interactive map showing habitat zones, migration routes, and collection points from CMLRE research data.</p>
+  </div>
+
+  <div class="map-layout">
+    <!-- MAP CONTROLS -->
+    <div class="map-controls">
+      <div class="control-group">
+        <label class="ctrl-label">Map Style</label>
+        <select id="mapStyleSel" class="ctrl-select">
+          <option value="ocean">Ocean (Esri)</option>
+          <option value="satellite">Satellite</option>
+          <option value="dark">Dark Terrain</option>
+          <option value="osm">OpenStreetMap</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label class="ctrl-label">Show Layers</label>
+        <label class="ctrl-check"><input type="checkbox" id="layerHabitat" checked /> Habitat Zones</label>
+        <label class="ctrl-check"><input type="checkbox" id="layerMigration" checked /> Migration Routes</label>
+        <label class="ctrl-check"><input type="checkbox" id="layerMarkers" checked /> Species Markers</label>
+        <label class="ctrl-check"><input type="checkbox" id="layerHeatmap" /> Density Heatmap</label>
+        <label class="ctrl-check"><input type="checkbox" id="layerDepth" /> Depth Zones</label>
+      </div>
+
+      <div class="control-group">
+        <label class="ctrl-label">Filter by Conservation</label>
+        <select id="conservFilter" class="ctrl-select">
+          <option value="all">All Status</option>
+          <option value="Critically Endangered">Critically Endangered</option>
+          <option value="Endangered">Endangered</option>
+          <option value="Vulnerable">Vulnerable</option>
+          <option value="Least Concern">Least Concern</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label class="ctrl-label">Highlight Species</label>
+        <select id="speciesHighlight" class="ctrl-select">
+          <option value="">— All species —</option>
+        </select>
+      </div>
+
+      <button class="ctrl-btn" id="resetMapBtn"><i class="fas fa-compress-arrows-alt"></i> Reset View</button>
+      <button class="ctrl-btn" id="animateMigBtn"><i class="fas fa-play"></i> Animate Migration</button>
+    </div>
+
+    <!-- MAP CANVAS -->
+    <div class="map-wrap">
+      <div id="oceanMap"></div>
+      <div class="map-legend" id="mapLegend">
+        <div class="legend-title">Legend</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#00e5ff"></span> Habitat Zone</div>
+        <div class="legend-item"><span class="legend-line" style="background:#ff6b35"></span> Migration Route</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#ff1744"></span> Critically Endangered</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#ff9800"></span> Endangered</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#ffeb3b"></span> Vulnerable</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#69f0ae"></span> Least Concern</div>
+      </div>
+
+      <!-- Floating info panel for hovered species -->
+      <div class="map-tooltip" id="mapTooltip" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- Map stats bar -->
+  <div class="map-stats-bar">
+    <div class="mstat"><i class="fas fa-fish"></i> <span id="mstatSpecies">—</span> Species Mapped</div>
+    <div class="mstat"><i class="fas fa-route"></i> <span id="mstatRoutes">—</span> Migration Routes</div>
+    <div class="mstat"><i class="fas fa-map-marked-alt"></i> <span id="mstatZones">—</span> Habitat Zones</div>
+    <div class="mstat"><i class="fas fa-exclamation-triangle"></i> <span id="mstatThreaten">—</span> Threatened Species</div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     SPECIES DATABASE BROWSER
+═══════════════════════════════════════════════════════ -->
+<section id="species-section" class="section">
+  <div class="section-header">
+    <h2><i class="fas fa-database"></i> Species Database</h2>
+    <p>Browse all species in the OceanVision knowledge base.</p>
+  </div>
+
+  <div class="db-toolbar">
+    <input type="text" id="speciesSearch" class="search-input" placeholder="&#xf002;  Search species, family, ocean…" />
+    <select id="habitatFilter" class="ctrl-select">
+      <option value="">All Habitats</option>
+      <option value="reef">Coral Reef</option>
+      <option value="deep">Deep Sea / Bathypelagic</option>
+      <option value="pelagic">Open Ocean / Pelagic</option>
+      <option value="demersal">Demersal</option>
+    </select>
+  </div>
+
+  <div class="species-grid" id="speciesGrid"></div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     ABOUT / METHODOLOGY
+═══════════════════════════════════════════════════════ -->
+<section id="about-section" class="section">
+  <div class="section-header">
+    <h2><i class="fas fa-info-circle"></i> About OceanVision</h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-card">
+      <div class="about-icon"><i class="fas fa-vector-square"></i></div>
+      <h3>YOLOv8 Detection</h3>
+      <p>Real-time object detection localises the fish within the image, producing bounding boxes and initial class predictions at ~60 FPS on GPU.</p>
+    </div>
+    <div class="about-card">
+      <div class="about-icon"><i class="fas fa-brain"></i></div>
+      <h3>MobileNetV2 Classifier</h3>
+      <p>A fine-tuned MobileNetV2 backbone classifies fish at the species level. Trained on Indian Ocean species data from CMLRE research vessels.</p>
+    </div>
+    <div class="about-card">
+      <div class="about-icon"><i class="fas fa-eye"></i></div>
+      <h3>OpenCV Feature Analysis</h3>
+      <p>30 morphological, colour and texture features are extracted: body shape, fin geometry, eye position, colour distribution, and scale texture.</p>
+    </div>
+    <div class="about-card">
+      <div class="about-icon"><i class="fas fa-map"></i></div>
+      <h3>Oceanographic Mapping</h3>
+      <p>Habitat polygons, migration route polylines, and species density heatmaps are rendered on Leaflet.js with Esri Ocean Base tiles.</p>
+    </div>
+    <div class="about-card">
+      <div class="about-icon"><i class="fas fa-anchor"></i></div>
+      <h3>CMLRE Research Data</h3>
+      <p>Species distribution data integrated from CMLRE (Centre for Marine Living Resources &amp; Ecology) otolith collection — Indian Ocean deep-sea surveys via R/V Sagar Sampada.</p>
+    </div>
+    <div class="about-card">
+      <div class="about-icon"><i class="fas fa-leaf"></i></div>
+      <h3>Conservation Awareness</h3>
+      <p>Every species card displays IUCN Red List status. The map highlights threatened species to support marine conservation decision-making.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <i class="fas fa-fish"></i> OceanVision
+      <small>Marine Intelligence Platform</small>
+    </div>
+    <div class="footer-credits">
+      Data: CMLRE Otolith Dataset &bull; Maps: Esri &amp; OpenStreetMap &bull;
+      Models: YOLOv8 + MobileNetV2 &bull; Built with Flask + OpenCV + Leaflet.js
+    </div>
+    <div class="footer-portal-links">
+      <strong>Research Portal:</strong>
+      <a href="/frontend/taxonomy.html" target="_blank"><i class="fas fa-dna"></i> DNA Taxonomy</a> &bull;
+      <a href="/frontend/oc.html"       target="_blank"><i class="fas fa-water"></i> Ocean Data</a> &bull;
+      <a href="/frontend/otolithography.html" target="_blank"><i class="fas fa-microscope"></i> Otolith</a> &bull;
+      <a href="/frontend/stream.html"   target="_blank"><i class="fas fa-table"></i> Datasets</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════════════
+     SPECIES MODAL
+═══════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="speciesModal" style="display:none">
+  <div class="modal-box">
+    <button class="modal-close" id="modalClose"><i class="fas fa-times"></i></button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script src="/static/js/main.js"></script>
+</body>
+</html>

@@ -285,6 +285,8 @@
                         </div>
                     </div>
                     <script>
+  const API_BASE = 'http://127.0.0.1:5000';   // ← change once if you move the server
+
   async function submitForm(event) {
     event.preventDefault();
 
@@ -322,7 +324,7 @@
     submitBtn.textContent = "Predicting...";
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/predict-ocean', {
+      const response = await fetch(`${API_BASE}/predict-ocean`, {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)

@@ -1,43 +1,68 @@
-# Python cache and artifacts
+# ─────────────────────────────────────────────────────────
+#  OceanVision — .gitignore
+# ─────────────────────────────────────────────────────────
+
+# ── Python ────────────────────────────────────────────────
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 
-# Virtual environments
+# ── Virtual environments ──────────────────────────────────
 venv/
-env/
 .venv/
+env/
 conda-env/
+.conda/
 
-# Environment files
+# ── Environment / secrets ─────────────────────────────────
 .env
+# .env.example is intentionally tracked
 
-# OS files
+# ── Runtime artefacts ────────────────────────────────────
+uploads/
+uploads_test/
+.deps_installed
+
+# ── Logs ─────────────────────────────────────────────────
+*.log
+logs/
+
+# ── OS ───────────────────────────────────────────────────
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# VS Code
+# ── IDEs ─────────────────────────────────────────────────
 .vscode/
-
-# ML models and artifacts (optional if large)
-*.h5
-*.pkl
-
-# Logs
-*.log
-
-# Node.js
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-package-lock.json
-yarn.lock
-
-# IDE
 .idea/
 *.swp
 *.swo
 *~
 
+# ── Node ─────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+package-lock.json
+yarn.lock
+
+# ── Jupyter ──────────────────────────────────────────────
+.ipynb_checkpoints/
+notebooks/
+
+# ── Large fish image datasets (training data, not needed at runtime) ──
+Fish_Dataset-20260917T035626Z-1-001/
+Fish_Dataset-20260917T035626Z-1-002/
+Fish_Dataset*.zip
+
+# ── Model weights & artifacts (large binary files) ───────
+# Store these on cloud storage (GDrive / HuggingFace Hub) and
+# download at deploy time via scripts/download_models.py
+models/fish_classifier_mobilenetv2.keras
+models/taxonomy_model.h5
+models/yolov8n.pt
+models/artifacts/*.pkl
+
+# Keep the models/ directory itself in git (README placeholder)
+!models/.gitkeep
+!models/artifacts/.gitkeep

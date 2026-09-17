@@ -356,6 +356,8 @@
     </div>
 
     <script>
+        const API_BASE = 'http://127.0.0.1:5000';   // ← change once if you move the server
+
         const taxonomyForm = document.getElementById('taxonomyForm');
         const submitBtn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
@@ -412,7 +414,7 @@
             
             try {
                 // Call backend API
-                const response = await fetch('http://127.0.0.1:8000/predict', {
+                const response = await fetch(`${API_BASE}/predict`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -452,7 +454,7 @@
                 showTaxonomyAlert(taxonomy, confidence);
                 
             } catch (error) {
-                resultsContainer.innerHTML = '<div style="color:#ff6b6b;">Error: ' + error.message + '<br>Make sure the backend server is running at http://127.0.0.1:8000</div>';
+                resultsContainer.innerHTML = '<div style="color:#ff6b6b;">Error: ' + error.message + '<br>Make sure the Flask server is running at ' + API_BASE + '</div>';
             } finally {
                 submitBtn.disabled = false;
                 btnText.innerHTML = 'Submit for Analysis';
