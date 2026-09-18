@@ -1,3 +1,6 @@
+# Datasets (large files - do not commit)
+datasets/
+
 # Python cache and artifacts
 __pycache__/
 *.pyc
