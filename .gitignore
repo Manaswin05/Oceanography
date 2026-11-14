@@ -19,16 +19,14 @@ Thumbs.db
 
 # VS Code
 .vscode/
-
-# ML models and artifacts (optional if large)
-*.h5
-*.pkl
+.kiro/
 
 # Logs
 *.log
 
 # Node.js
 node_modules/
+frontend_react/node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -41,3 +39,7 @@ yarn.lock
 *.swo
 *~
 
+
+# datasets
+datasets/
+others/
