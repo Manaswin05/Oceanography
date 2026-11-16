@@ -1,0 +1,289 @@
+{
+  "info": {
+    "name": "Marine Research Portal API",
+    "description": "Complete Postman collection for the Marine Research Portal REST API.\n\nSet the `base_url` environment variable to `http://127.0.0.1:8000` before running.\n\nSwagger UI: http://127.0.0.1:8000/docs\nReDoc: http://127.0.0.1:8000/redoc",
+    "version": "2.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "System",
+      "item": [
+        {
+          "name": "GET / — API Root",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/", "host": ["{{base_url}}"], "path": [""] },
+            "description": "Returns API version, model status, and an endpoint map."
+          }
+        },
+        {
+          "name": "GET /health — Liveness Probe",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": { "raw": "{{base_url}}/health", "host": ["{{base_url}}"], "path": ["health"] },
+            "description": "Lightweight ping — returns {status: ok, version: 2.0.0}."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Genomic Taxonomy",
+      "item": [
+        {
+          "name": "POST /predict — Yellowfin Tuna-like sequence",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sequence\": \"ATGCCCGATCGATCGATCGAACGTGCTAGCTAGCATCGATCGATCGATCGAATGCCCGATCGATCGATCGAACGT\",\n  \"filter_id\": \"sample-001-alpha\",\n  \"reads\": 15000\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/predict",
+              "host": ["{{base_url}}"],
+              "path": ["predict"]
+            },
+            "description": "Classify a single DNA sequence through the 7-rank taxonomy tree (Kingdom → Species)."
+          }
+        },
+        {
+          "name": "POST /predict — Coral-reef short read",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sequence\": \"GCTAGCATCGATCGATCGATCGATCGAATGCCC\",\n  \"filter_id\": \"coral-reef-23\",\n  \"reads\": 8500\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/predict",
+              "host": ["{{base_url}}"],
+              "path": ["predict"]
+            }
+          }
+        },
+        {
+          "name": "POST /predict — High-reads deep-water",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sequence\": \"ATGATGATCGATCGATCGAACGTGCTAGCTAGCATCGATCGATCGATCGAATGCCCGATCGATCGATCGAACGTGC\",\n  \"filter_id\": \"deep-water-07\",\n  \"reads\": 95000\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/predict",
+              "host": ["{{base_url}}"],
+              "path": ["predict"]
+            }
+          }
+        },
+        {
+          "name": "POST /predict/batch — Two sequences",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"samples\": [\n    {\n      \"sequence\": \"ATGCCCGATCGATCGATCGAACGTGCTAGCTAGCATCGATCGATCGATCGA\",\n      \"filter_id\": \"sample-001-alpha\",\n      \"reads\": 15000\n    },\n    {\n      \"sequence\": \"GCTAGCTAGCATCGATCGATCGATCGAATGCCCGATCGATCGATCGAACGT\",\n      \"filter_id\": \"sample-002-beta\",\n      \"reads\": 12000\n    }\n  ]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/predict/batch",
+              "host": ["{{base_url}}"],
+              "path": ["predict", "batch"]
+            },
+            "description": "Submit up to 10 sequences in one request. Returns an array of taxonomy results."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Ocean Climate",
+      "item": [
+        {
+          "name": "POST /predict-ocean — Great Barrier Reef (healthy)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Location\": \"Great Barrier Reef, Queensland\",\n  \"Latitude\": -18.2871,\n  \"Longitude\": 147.6992,\n  \"SST\": 27.4,\n  \"pH_Level\": 8.12,\n  \"Year\": 2026,\n  \"Month\": 7,\n  \"Bleaching_Severity\": \"Low\",\n  \"Marine_Heatwave\": false,\n  \"Salinity\": 34.8,\n  \"Dissolved_Oxygen\": 6.8,\n  \"Depth\": 25.0\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/predict-ocean",
+              "host": ["{{base_url}}"],
+              "path": ["predict-ocean"]
+            },
+            "description": "Healthy tropical reef scenario."
+          }
+        },
+        {
+          "name": "POST /predict-ocean — Mediterranean heat stress",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Location\": \"Strait of Sicily\",\n  \"Latitude\": 37.1,\n  \"Longitude\": 13.4,\n  \"SST\": 31.8,\n  \"pH_Level\": 7.95,\n  \"Year\": 2026,\n  \"Month\": 8,\n  \"Bleaching_Severity\": \"Severe\",\n  \"Marine_Heatwave\": true,\n  \"Salinity\": 38.5,\n  \"Dissolved_Oxygen\": 5.2,\n  \"Depth\": 15.0\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/predict-ocean",
+              "host": ["{{base_url}}"],
+              "path": ["predict-ocean"]
+            },
+            "description": "Active marine heatwave, severe bleaching — expect high ecosystem stress."
+          }
+        },
+        {
+          "name": "POST /predict-ocean — Arctic cold-water survey",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Accept", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"Location\": \"Barents Sea\",\n  \"Latitude\": 74.5,\n  \"Longitude\": 32.0,\n  \"SST\": 3.2,\n  \"pH_Level\": 8.18,\n  \"Year\": 2026,\n  \"Month\": 3,\n  \"Bleaching_Severity\": \"None\",\n  \"Marine_Heatwave\": false,\n  \"Salinity\": 33.1,\n  \"Dissolved_Oxygen\": 9.4,\n  \"Depth\": 120.0\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{base_url}}/predict-ocean",
+              "host": ["{{base_url}}"],
+              "path": ["predict-ocean"]
+            },
+            "description": "Cold-water high-latitude survey scenario."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Computer Vision",
+      "item": [
+        {
+          "name": "POST /analyze-image — taxonomy (form-data)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Upload a JPEG/PNG fish image. Use files from GET /sample-images."
+                },
+                {
+                  "key": "analysis_type",
+                  "value": "taxonomy",
+                  "type": "text",
+                  "description": "Options: taxonomy | otolith | habitat"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/analyze-image",
+              "host": ["{{base_url}}"],
+              "path": ["analyze-image"]
+            },
+            "description": "Upload any fish image (PNG/JPEG). Set analysis_type to taxonomy, otolith, or habitat."
+          }
+        },
+        {
+          "name": "POST /analyze-image — otolith analysis",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": "" },
+                { "key": "analysis_type", "value": "otolith", "type": "text" }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/analyze-image",
+              "host": ["{{base_url}}"],
+              "path": ["analyze-image"]
+            },
+            "description": "Returns otolith_analysis block with sagitta pattern and estimated age."
+          }
+        },
+        {
+          "name": "POST /analyze-image — habitat analysis",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": "" },
+                { "key": "analysis_type", "value": "habitat", "type": "text" }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/analyze-image",
+              "host": ["{{base_url}}"],
+              "path": ["analyze-image"]
+            },
+            "description": "Returns habitat_analysis block with ecosystem indicator and depth range."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Utilities",
+      "item": [
+        {
+          "name": "GET /sample-images — List test images",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Accept", "value": "application/json" }],
+            "url": {
+              "raw": "{{base_url}}/sample-images",
+              "host": ["{{base_url}}"],
+              "path": ["sample-images"]
+            },
+            "description": "Returns the 9 built-in sample fish images you can use to test /analyze-image."
+          }
+        }
+      ]
+    }
+  ]
+}
+

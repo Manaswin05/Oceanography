@@ -1,0 +1,713 @@
+{
+  "Black Sea Sprat": {
+    "body_length_px": {
+      "mean": 428.7164,
+      "std": 44.2463,
+      "min": 350.11,
+      "max": 532.54,
+      "median": 421.82
+    },
+    "body_height_px": {
+      "mean": 92.4303,
+      "std": 13.0394,
+      "min": 72.54,
+      "max": 131.44,
+      "median": 90.92
+    },
+    "aspect_ratio": {
+      "mean": 4.6842,
+      "std": 0.4777,
+      "min": 3.1852,
+      "max": 5.5043,
+      "median": 4.7782
+    },
+    "fish_area_px2": {
+      "mean": 25071.2924,
+      "std": 5615.6432,
+      "min": 15492.5,
+      "max": 44052.0,
+      "median": 24947.0
+    },
+    "hull_area_px2": {
+      "mean": 30815.9753,
+      "std": 6623.8541,
+      "min": 19535.5,
+      "max": 53729.0,
+      "median": 30185.5
+    },
+    "fin_area_proxy_px2": {
+      "mean": 5744.6829,
+      "std": 2479.6113,
+      "min": 1243.5,
+      "max": 12882.5,
+      "median": 5056.0
+    },
+    "fin_body_ratio": {
+      "mean": 0.2358,
+      "std": 0.1068,
+      "min": 0.0495,
+      "max": 0.5857,
+      "median": 0.2092
+    },
+    "perimeter_px": {
+      "mean": 1076.1779,
+      "std": 118.0858,
+      "min": 833.63,
+      "max": 1366.62,
+      "median": 1071.61
+    },
+    "compactness": {
+      "mean": 0.2706,
+      "std": 0.0326,
+      "min": 0.1987,
+      "max": 0.4193,
+      "median": 0.2687
+    },
+    "bbox_w": {
+      "mean": 294.7282,
+      "std": 103.6192,
+      "min": 80.0,
+      "max": 506.0,
+      "median": 304.0
+    },
+    "bbox_h": {
+      "mean": 307.8337,
+      "std": 90.5856,
+      "min": 76.0,
+      "max": 445.0,
+      "median": 323.0
+    }
+  },
+  "Gilt-Head Bream": {
+    "body_length_px": {
+      "mean": 501.17,
+      "std": 41.7593,
+      "min": 385.7,
+      "max": 572.91,
+      "median": 512.08
+    },
+    "body_height_px": {
+      "mean": 197.1578,
+      "std": 22.74,
+      "min": 159.0,
+      "max": 254.93,
+      "median": 196.32
+    },
+    "aspect_ratio": {
+      "mean": 2.5696,
+      "std": 0.3204,
+      "min": 1.85,
+      "max": 3.2615,
+      "median": 2.5398
+    },
+    "fish_area_px2": {
+      "mean": 64696.9903,
+      "std": 10320.7367,
+      "min": 44647.5,
+      "max": 88019.0,
+      "median": 64167.5
+    },
+    "hull_area_px2": {
+      "mean": 72857.9749,
+      "std": 11736.8593,
+      "min": 49552.5,
+      "max": 101536.5,
+      "median": 71841.0
+    },
+    "fin_area_proxy_px2": {
+      "mean": 8160.9846,
+      "std": 2314.2875,
+      "min": 2985.5,
+      "max": 13617.5,
+      "median": 8058.0
+    },
+    "fin_body_ratio": {
+      "mean": 0.1263,
+      "std": 0.03,
+      "min": 0.0395,
+      "max": 0.1983,
+      "median": 0.127
+    },
+    "perimeter_px": {
+      "mean": 1322.7405,
+      "std": 106.5762,
+      "min": 1024.06,
+      "max": 1569.07,
+      "median": 1340.54
+    },
+    "compactness": {
+      "mean": 0.4648,
+      "std": 0.0538,
+      "min": 0.3496,
+      "max": 0.6454,
+      "median": 0.4631
+    },
+    "bbox_w": {
+      "mean": 378.8723,
+      "std": 125.9605,
+      "min": 161.0,
+      "max": 575.0,
+      "median": 367.0
+    },
+    "bbox_h": {
+      "mean": 355.1539,
+      "std": 100.674,
+      "min": 160.0,
+      "max": 445.0,
+      "median": 418.0
+    }
+  },
+  "Hourse Mackerel": {
+    "body_length_px": {
+      "mean": 474.2993,
+      "std": 42.4298,
+      "min": 375.89,
+      "max": 591.15,
+      "median": 476.97
+    },
+    "body_height_px": {
+      "mean": 121.4038,
+      "std": 15.4485,
+      "min": 95.63,
+      "max": 162.9,
+      "median": 117.34
+    },
+    "aspect_ratio": {
+      "mean": 3.9474,
+      "std": 0.4478,
+      "min": 2.8402,
+      "max": 5.0862,
+      "median": 4.0041
+    },
+    "fish_area_px2": {
+      "mean": 37115.0153,
+      "std": 7645.6411,
+      "min": 25152.0,
+      "max": 60647.5,
+      "median": 34907.5
+    },
+    "hull_area_px2": {
+      "mean": 44420.4253,
+      "std": 8156.1617,
+      "min": 31206.5,
+      "max": 74276.5,
+      "median": 42833.0
+    },
+    "fin_area_proxy_px2": {
+      "mean": 7305.41,
+      "std": 2534.1214,
+      "min": 1112.5,
+      "max": 18760.0,
+      "median": 7062.5
+    },
+    "fin_body_ratio": {
+      "mean": 0.2038,
+      "std": 0.0714,
+      "min": 0.0224,
+      "max": 0.3911,
+      "median": 0.2054
+    },
+    "perimeter_px": {
+      "mean": 1225.3048,
+      "std": 106.251,
+      "min": 958.26,
+      "max": 1597.71,
+      "median": 1234.48
+    },
+    "compactness": {
+      "mean": 0.3109,
+      "std": 0.0522,
+      "min": 0.2082,
+      "max": 0.5337,
+      "median": 0.3065
+    },
+    "bbox_w": {
+      "mean": 285.7133,
+      "std": 77.093,
+      "min": 122.0,
+      "max": 487.0,
+      "median": 288.0
+    },
+    "bbox_h": {
+      "mean": 397.8573,
+      "std": 51.3858,
+      "min": 116.0,
+      "max": 445.0,
+      "median": 409.5
+    }
+  },
+  "Red Mullet": {
+    "body_length_px": {
+      "mean": 434.7037,
+      "std": 64.8818,
+      "min": 242.8,
+      "max": 579.14,
+      "median": 435.11
+    },
+    "body_height_px": {
+      "mean": 104.219,
+      "std": 16.3646,
+      "min": 70.33,
+      "max": 168.81,
+      "median": 103.38
+    },
+    "aspect_ratio": {
+      "mean": 4.2032,
+      "std": 0.5213,
+      "min": 2.9339,
+      "max": 5.2134,
+      "median": 4.3213
+    },
+    "fish_area_px2": {
+      "mean": 29527.2408,
+      "std": 8895.8537,
+      "min": 13843.5,
+      "max": 68110.0,
+      "median": 28785.0
+    },
+    "hull_area_px2": {
+      "mean": 34838.8055,
+      "std": 9710.3893,
+      "min": 15846.0,
+      "max": 73675.5,
+      "median": 32933.0
+    },
+    "fin_area_proxy_px2": {
+      "mean": 5311.5646,
+      "std": 1700.4992,
+      "min": 1952.5,
+      "max": 10002.0,
+      "median": 5125.0
+    },
+    "fin_body_ratio": {
+      "mean": 0.1854,
+      "std": 0.0548,
+      "min": 0.0636,
+      "max": 0.3446,
+      "median": 0.1763
+    },
+    "perimeter_px": {
+      "mean": 1115.6448,
+      "std": 162.048,
+      "min": 661.04,
+      "max": 1568.57,
+      "median": 1120.21
+    },
+    "compactness": {
+      "mean": 0.2957,
+      "std": 0.0434,
+      "min": 0.2052,
+      "max": 0.4422,
+      "median": 0.2942
+    },
+    "bbox_w": {
+      "mean": 359.3696,
+      "std": 119.1479,
+      "min": 84.0,
+      "max": 577.0,
+      "median": 376.5
+    },
+    "bbox_h": {
+      "mean": 236.2517,
+      "std": 109.8904,
+      "min": 75.0,
+      "max": 445.0,
+      "median": 245.0
+    }
+  },
+  "Red Sea Bream": {
+    "body_length_px": {
+      "mean": 489.0971,
+      "std": 59.6751,
+      "min": 300.72,
+      "max": 586.01,
+      "median": 496.52
+    },
+    "body_height_px": {
+      "mean": 216.5936,
+      "std": 35.7386,
+      "min": 153.21,
+      "max": 355.0,
+      "median": 213.77
+    },
+    "aspect_ratio": {
+      "mean": 2.3044,
+      "std": 0.3909,
+      "min": 1.2507,
+      "max": 3.0508,
+      "median": 2.3716
+    },
+    "fish_area_px2": {
+      "mean": 70962.4809,
+      "std": 17052.5113,
+      "min": 38201.5,
+      "max": 128773.5,
+      "median": 69735.75
+    },
+    "hull_area_px2": {
+      "mean": 79017.1777,
+      "std": 17595.1575,
+      "min": 42518.5,
+      "max": 133970.5,
+      "median": 77066.0
+    },
+    "fin_area_proxy_px2": {
+      "mean": 8054.6968,
+      "std": 2614.3562,
+      "min": 2063.0,
+      "max": 15878.5,
+      "median": 7840.0
+    },
+    "fin_body_ratio": {
+      "mean": 0.1173,
+      "std": 0.0369,
+      "min": 0.0188,
+      "max": 0.1935,
+      "median": 0.1205
+    },
+    "perimeter_px": {
+      "mean": 1346.1316,
+      "std": 135.9827,
+      "min": 971.44,
+      "max": 1621.43,
+      "median": 1352.79
+    },
+    "compactness": {
+      "mean": 0.4884,
+      "std": 0.0671,
+      "min": 0.3571,
+      "max": 0.7381,
+      "median": 0.4758
+    },
+    "bbox_w": {
+      "mean": 406.5463,
+      "std": 110.0129,
+      "min": 172.0,
+      "max": 586.0,
+      "median": 433.0
+    },
+    "bbox_h": {
+      "mean": 336.6331,
+      "std": 83.2788,
+      "min": 167.0,
+      "max": 445.0,
+      "median": 345.0
+    }
+  },
+  "Sea Bass": {
+    "body_length_px": {
+      "mean": 496.1798,
+      "std": 56.7405,
+      "min": 370.9,
+      "max": 594.62,
+      "median": 479.72
+    },
+    "body_height_px": {
+      "mean": 128.9672,
+      "std": 20.8002,
+      "min": 96.03,
+      "max": 167.52,
+      "median": 134.24
+    },
+    "aspect_ratio": {
+      "mean": 3.9035,
+      "std": 0.474,
+      "min": 2.6909,
+      "max": 5.1002,
+      "median": 3.8621
+    },
+    "fish_area_px2": {
+      "mean": 47617.4015,
+      "std": 12049.6382,
+      "min": 26815.0,
+      "max": 70089.0,
+      "median": 51615.5
+    },
+    "hull_area_px2": {
+      "mean": 51838.6567,
+      "std": 13236.3768,
+      "min": 29389.0,
+      "max": 79500.5,
+      "median": 55480.0
+    },
+    "fin_area_proxy_px2": {
+      "mean": 4221.2553,
+      "std": 1747.2744,
+      "min": 1030.5,
+      "max": 9491.0,
+      "median": 3912.5
+    },
+    "fin_body_ratio": {
+      "mean": 0.0886,
+      "std": 0.0267,
+      "min": 0.0251,
+      "max": 0.1481,
+      "median": 0.0915
+    },
+    "perimeter_px": {
+      "mean": 1224.4666,
+      "std": 147.3493,
+      "min": 894.54,
+      "max": 1507.3,
+      "median": 1196.38
+    },
+    "compactness": {
+      "mean": 0.3945,
+      "std": 0.0516,
+      "min": 0.291,
+      "max": 0.5831,
+      "median": 0.3896
+    },
+    "bbox_w": {
+      "mean": 374.3279,
+      "std": 134.5781,
+      "min": 99.0,
+      "max": 590.0,
+      "median": 408.0
+    },
+    "bbox_h": {
+      "mean": 334.5331,
+      "std": 96.671,
+      "min": 99.0,
+      "max": 445.0,
+      "median": 362.0
+    }
+  },
+  "Shrimp": {
+    "body_length_px": {
+      "mean": 409.2369,
+      "std": 84.1209,
+      "min": 245.9,
+      "max": 523.46,
+      "median": 444.97
+    },
+    "body_height_px": {
+      "mean": 95.7156,
+      "std": 12.9508,
+      "min": 72.72,
+      "max": 132.51,
+      "median": 93.56
+    },
+    "aspect_ratio": {
+      "mean": 4.3928,
+      "std": 1.1446,
+      "min": 1.9001,
+      "max": 6.1295,
+      "median": 4.8578
+    },
+    "fish_area_px2": {
+      "mean": 22686.7445,
+      "std": 5092.3046,
+      "min": 13625.0,
+      "max": 31789.5,
+      "median": 23625.5
+    },
+    "hull_area_px2": {
+      "mean": 29751.7034,
+      "std": 5729.9587,
+      "min": 18163.5,
+      "max": 44086.5,
+      "median": 30051.0
+    },
+    "fin_area_proxy_px2": {
+      "mean": 7064.9589,
+      "std": 2289.9567,
+      "min": 2592.5,
+      "max": 13784.0,
+      "median": 6880.5
+    },
+    "fin_body_ratio": {
+      "mean": 0.3307,
+      "std": 0.1559,
+      "min": 0.1207,
+      "max": 0.8702,
+      "median": 0.2845
+    },
+    "perimeter_px": {
+      "mean": 1182.6466,
+      "std": 182.2222,
+      "min": 836.51,
+      "max": 1656.57,
+      "median": 1221.37
+    },
+    "compactness": {
+      "mean": 0.2054,
+      "std": 0.0292,
+      "min": 0.1388,
+      "max": 0.2976,
+      "median": 0.2022
+    },
+    "bbox_w": {
+      "mean": 293.1356,
+      "std": 134.0184,
+      "min": 78.0,
+      "max": 518.0,
+      "median": 292.0
+    },
+    "bbox_h": {
+      "mean": 272.6257,
+      "std": 107.7692,
+      "min": 79.0,
+      "max": 445.0,
+      "median": 266.0
+    }
+  },
+  "Striped Red Mullet": {
+    "body_length_px": {
+      "mean": 414.3102,
+      "std": 56.6872,
+      "min": 238.0,
+      "max": 516.49,
+      "median": 419.22
+    },
+    "body_height_px": {
+      "mean": 104.5027,
+      "std": 13.4805,
+      "min": 67.93,
+      "max": 129.44,
+      "median": 106.48
+    },
+    "aspect_ratio": {
+      "mean": 3.98,
+      "std": 0.4164,
+      "min": 2.6827,
+      "max": 4.9628,
+      "median": 4.0798
+    },
+    "fish_area_px2": {
+      "mean": 29050.7127,
+      "std": 7421.3501,
+      "min": 13785.5,
+      "max": 44450.5,
+      "median": 28987.0
+    },
+    "hull_area_px2": {
+      "mean": 33799.322,
+      "std": 8653.6075,
+      "min": 15909.5,
+      "max": 51869.0,
+      "median": 33983.0
+    },
+    "fin_area_proxy_px2": {
+      "mean": 4748.6092,
+      "std": 1802.8979,
+      "min": 1528.5,
+      "max": 10840.5,
+      "median": 4481.0
+    },
+    "fin_body_ratio": {
+      "mean": 0.1643,
+      "std": 0.0447,
+      "min": 0.0635,
+      "max": 0.2798,
+      "median": 0.1625
+    },
+    "perimeter_px": {
+      "mean": 1065.7314,
+      "std": 147.5113,
+      "min": 670.36,
+      "max": 1363.31,
+      "median": 1069.41
+    },
+    "compactness": {
+      "mean": 0.3187,
+      "std": 0.0388,
+      "min": 0.2401,
+      "max": 0.4511,
+      "median": 0.3105
+    },
+    "bbox_w": {
+      "mean": 264.6075,
+      "std": 127.4864,
+      "min": 69.0,
+      "max": 504.0,
+      "median": 241.0
+    },
+    "bbox_h": {
+      "mean": 304.7065,
+      "std": 114.0316,
+      "min": 86.0,
+      "max": 445.0,
+      "median": 336.0
+    }
+  },
+  "Trout": {
+    "body_length_px": {
+      "mean": 486.6229,
+      "std": 40.2043,
+      "min": 404.0,
+      "max": 572.28,
+      "median": 481.15
+    },
+    "body_height_px": {
+      "mean": 169.5801,
+      "std": 21.5278,
+      "min": 131.11,
+      "max": 237.0,
+      "median": 170.22
+    },
+    "aspect_ratio": {
+      "mean": 2.913,
+      "std": 0.4196,
+      "min": 1.8734,
+      "max": 4.1107,
+      "median": 2.9647
+    },
+    "fish_area_px2": {
+      "mean": 56802.3155,
+      "std": 8680.6907,
+      "min": 39681.5,
+      "max": 76464.0,
+      "median": 58687.0
+    },
+    "hull_area_px2": {
+      "mean": 63131.2255,
+      "std": 9033.4945,
+      "min": 44401.0,
+      "max": 93441.5,
+      "median": 65081.0
+    },
+    "fin_area_proxy_px2": {
+      "mean": 6328.91,
+      "std": 2347.1264,
+      "min": 1249.0,
+      "max": 16977.5,
+      "median": 5970.0
+    },
+    "fin_body_ratio": {
+      "mean": 0.1138,
+      "std": 0.042,
+      "min": 0.0202,
+      "max": 0.2266,
+      "median": 0.114
+    },
+    "perimeter_px": {
+      "mean": 1309.1294,
+      "std": 94.5036,
+      "min": 1101.28,
+      "max": 1728.98,
+      "median": 1309.39
+    },
+    "compactness": {
+      "mean": 0.4172,
+      "std": 0.0561,
+      "min": 0.2996,
+      "max": 0.6414,
+      "median": 0.4056
+    },
+    "bbox_w": {
+      "mean": 324.0285,
+      "std": 99.5733,
+      "min": 141.0,
+      "max": 545.0,
+      "median": 331.0
+    },
+    "bbox_h": {
+      "mean": 394.7718,
+      "std": 54.3495,
+      "min": 192.0,
+      "max": 445.0,
+      "median": 411.0
+    }
+  }
+}
